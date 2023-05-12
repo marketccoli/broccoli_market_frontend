@@ -6,7 +6,10 @@ import { Login } from "../pages/Login";
 import { Mypage } from "../pages/Mypage";
 import { ChatPage } from "../pages/ChatPage";
 import { Details } from "../pages/Details";
-import { RelatedPosts } from "../pages/RelatedPosts";
+import { AddProduct } from "../pages/AddProduct";
+import { RegionProduct } from "../pages/RegionProduct";
+import { ProductsPage } from "../pages/ProductsPage";
+import { SearchProduct } from "../pages/SearchProduct";
 
 export const Router = () => {
   return (
@@ -17,8 +20,11 @@ export const Router = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/chat" element={<ChatPage />} />
-        <Route path="/boards/:id" element={<Details />} />
-        <Route path="/related" element={<RelatedPosts />} />
+        <Route path="/product/:id" element={<Details />} />
+        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="/region" element={<RegionProduct />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/search" element={<SearchProduct />} />
       </Routes>
     </Layout>
   );
