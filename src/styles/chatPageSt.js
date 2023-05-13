@@ -1,4 +1,6 @@
 import { styled } from "styled-components";
+
+
 const ChatDiv = styled.div`
   display: flex;
   overflow-x: auto;
@@ -52,10 +54,6 @@ const Img = styled.img`
 
 `
 
-
-
-
-
 const ListbarNav = styled.nav`
   display: flex;
   border-right: 1px solid #0017580d;
@@ -67,10 +65,6 @@ const ListbarNav = styled.nav`
   background-color: #fff;
   -webkit-box-pack: justify;
 `;
-
-
-
-
 
 const MynameDiv = styled.div`
   position: relative;

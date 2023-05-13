@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ScrollToBottom from "react-scroll-to-bottom"
-
+import { MessageMeta, MessageContent, MessageWrapper, MessageContainer, InputMessage, TIme, Content, MessageButton, FooterForm } from "../styles/chatroomSt"
 
 function Chatroom({ socket, username, room }) {
     //Chat 컴포넌트는 socket, username, room이라는 세 개의 props를 받음
@@ -40,42 +40,45 @@ function Chatroom({ socket, username, room }) {
 
     return (
         <div>
-            {/* 현재 Chat 컴포넌트는 채팅 창의 헤더, 바디 및 푸터를 구성 */}
-            <div className='chat-header'>
-                <p>Live Chat</p>
+            <div className="chat-header">
+                {/* <p>실시간 채팅창</p> */}
             </div>
-            <div className='chat-body'>
-                <ScrollToBottom className='message-container'>
+            <div className="chat-body">
+                <ScrollToBottom className="message-container">
                     {messageList.map((messageContent) => {
-                        return <div className='message' id={username === messageContent.author ? "you " : "other"}>
-                            < div ><div className='message-content'><p>{messageContent.message}</p></div>
-
-                                <div className='message-meta'>
-                                    <p id="time">{messageContent.time}</p>
-                                    <p id="author">{messageContent.author}</p>
-
-                                </div>
-                            </div>
-                        </div>
-                        // <h1>{messageContent.message}</h1>
-
+                        const ismine = messageContent.author === username;
+                        return (
+                            <MessageContainer key={messageContent.id} ismine={ismine}>
+                                <MessageWrapper ismine={ismine}>
+                                    <MessageContent ismine={ismine}>
+                                        <Content>{messageContent.message}</Content>
+                                    </MessageContent>
+                                    <MessageMeta ismine={ismine}>
+                                        <TIme id="time">{messageContent.time}</TIme>
+                                        {/* <p id="author">{messageContent.author}</p> */}
+                                    </MessageMeta>
+                                </MessageWrapper>
+                            </MessageContainer>
+                        );
                     })}
                 </ScrollToBottom>
-            </div >
-            <div className='chat-footer'>
-                {/* 푸터에는 메시지를 입력하는 input 요소와 메시지를 보내는 버튼이 포함 */}
-                <input type="text" value={currentMessage} placeholder='Hey...' onChange={(event) => {
-                    setCurrentMessage(event.target.value)
-                    //  메시지가 입력될 때마다 currentMessage state가 업데이트
-                }}
-                    onkeyPress={(event) => { event.key === "Enter" && sendMessage() }}
-                />
-                <button onClick={sendMessage}>&#9658;</button>
-                {/*  버튼을 클릭하면 sendMessage 함수가 실행되고, 소켓 이벤트가 발생 */}
             </div>
-
-        </div >
-    )
+            <FooterForm className="chat-footer" onSubmit={(event) => event.preventDefault()} >
+                <InputMessage
+                    type="text"
+                    value={currentMessage}
+                    placeholder="메시지를 입력하세요."
+                    onChange={(event) => {
+                        setCurrentMessage(event.target.value);
+                    }}
+                // onKeyPress={(event) => {
+                //     event.key === "Enter" && sendMessage();
+                // }}
+                />
+                <MessageButton onClick={sendMessage}>전송</MessageButton>
+            </FooterForm>
+        </div>
+    );
 }
 
-export default Chatroom
+export default Chatroom;
