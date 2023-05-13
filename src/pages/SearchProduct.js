@@ -1,11 +1,17 @@
-import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 export const SearchProduct = () => {
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("keyword");
+  console.log(searchQuery);
   return (
-    <section className="flex justify-center  text-gray-600 body-font">
-      <div className="px-4 py-24 mx-7 min-w-[700px] max-w-[1200px]">
-        <span className="text-3xl">검색 결과</span>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 p-2 pt-3 auto-cols-max auto-rows-max h-full">
+    <section className="flex justify-center text-gray-600 min-w-[700px]">
+      <div className="px-4 py-24 mx-7 max-w-[1200px]">
+        <div className="pl-4 flex items-center ">
+          <p className="text-green-800 text-lg font-bold pr-2">{searchQuery}</p>
+          <span className="text-2xl">에 대한검색 결과</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2">
           <div className="p-4">
             <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
 

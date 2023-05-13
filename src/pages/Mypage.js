@@ -1,5 +1,9 @@
 import React from "react";
 
 export const Mypage = () => {
-  return <div>Mypage</div>;
+  return (
+    <div className="container flex justify-center mx-auto">
+      <div className="flex flex-col"></div>
+    </div>
+  );
 };
