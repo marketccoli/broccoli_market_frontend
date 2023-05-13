@@ -1,7 +1,20 @@
 import React from "react";
-import { Footer } from "../Layout/Footer";
+import { ProductCard } from "../components/ProductCard";
 
 export const ProductsPage = () => {
+  const product = {
+    product_id: 1,
+    title: "타이틀1",
+    address: "서울시 용산구",
+    price: "15000",
+    category: "전자제품",
+    likes: 10,
+    views: 50,
+    createdAt: "2022-07-25T07:45:56.000Z",
+    is_sold: false,
+    photo_ip: "https://dummyimage.com/420x260",
+  };
+
   return (
     <section className="flex justify-center text-gray-600 min-w-[700px]">
       <div className="px-4 py-24 mx-7 max-w-[1200px]">
@@ -9,60 +22,14 @@ export const ProductsPage = () => {
         <span className="ml-3 text-2xl">중고 거래</span>
         {/* </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2">
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
-          <div className="p-4">
-            <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-            <div className="mt-4">
-              <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-              <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-              <p className="mt-1">10,000원</p>
-            </div>
-          </div>
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
+          <ProductCard product={product} />
         </div>
       </div>
     </section>
