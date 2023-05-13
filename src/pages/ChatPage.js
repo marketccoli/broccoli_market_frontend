@@ -44,12 +44,16 @@ export const ChatPage = () => {
           </ListbarNav>
         </ChatList>
         <ChatDetail>
+          <JoinChat />
           <EmptyBox>
-            <div>채팅할 상대를 선택해주세요.</div>
-            {/* <JoinChat /> */}
+            {/* <div>채팅할 상대를 선택해주세요.</div> */}
+
           </EmptyBox>
+          <div>
+
+          </div>
         </ChatDetail>
-        <JoinChat />
+        <button>채팅하기</button>
         <div></div>
       </ChatDiv >
     </>
