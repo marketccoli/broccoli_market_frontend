@@ -2,6 +2,7 @@ import React from "react";
 import {
   EmptyBox, ChatDetail, LastCommentDetails, LastComment, SubText, YourNickname, YourInfo, ListA, ListLi, ListUl, MynameDiv, ListbarNav, SidebarNav, ChatList, ChatDiv, Img
 } from "../styles/chatPageSt";
+import JoinChat from "../components/JoinChat";
 export const ChatPage = () => {
   return (
     <>
@@ -10,8 +11,8 @@ export const ChatPage = () => {
         <ChatList>
           <SidebarNav className="sidebar">
             <a href=" " style={{ textDecoration: "none" }}>
-              {/* <Img className="profile-image" src="https://dnvefa72aowie.cloudfront.net/origin/profile/profile_default.png" alt="">
-              </Img> */}
+              <Img className="profile-image" src="https://dnvefa72aowie.cloudfront.net/origin/profile/profile_default.png" alt="">
+              </Img>
             </a>
           </SidebarNav>
           <ListbarNav>
@@ -45,8 +46,10 @@ export const ChatPage = () => {
         <ChatDetail>
           <EmptyBox>
             <div>채팅할 상대를 선택해주세요.</div>
+            {/* <JoinChat /> */}
           </EmptyBox>
         </ChatDetail>
+        <JoinChat />
         <div></div>
       </ChatDiv >
     </>
