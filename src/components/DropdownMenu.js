@@ -1,4 +1,5 @@
 export const DropdownMenu = ({ onClickHandler }) => {
+  // dropdown menu component, with navigate handler passed as props
   return (
     <div className="flex flex-col  absolute top-14 right-8  bg-white rounded-md border border-green-200 border-opacity-60 z-50">
       <div className="rounded-t-md px-4 py-1  border-b border-green-200  text-black ">
