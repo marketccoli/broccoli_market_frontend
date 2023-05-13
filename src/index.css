@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .dropdownItemStyle {
+    @apply text-black  hover:bg-green-800 hover:text-white cursor-pointer;
+  }
+}
+
 @keyframes ripple {
   0% {
     opacity: 0;

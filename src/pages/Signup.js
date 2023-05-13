@@ -6,11 +6,43 @@ import { useInput } from "../hooks/useInput";
 import { ClickableTextHighlight } from "../components/ClickableTextHighlight";
 import { useState } from "react";
 import { cityOptions, guOptions } from "../utils/regionList";
+import { toast } from "react-toastify";
 import Select from "react-select";
 
 export const Signup = () => {
   const navigate = useNavigate();
-  const onLoginHandler = () => {};
+
+  const onLoginHandler = (e) => {
+    if (!username) {
+      toast.error("아이디를 입력해주세요"); // Display error toast
+      return;
+    }
+    if (!password) {
+      toast.error("비밀번호를 입력해주세요"); // Display error toast
+      return;
+    }
+
+    if (password !== passwordChecker) {
+      toast.error("비밀번호가 일치하지 않습니다"); // Display error toast
+      return;
+    }
+    if (!nickname) {
+      toast.error("닉네임을 입력해주세요"); // Display error toast
+      return;
+    }
+    if (!email) {
+      toast.error("이메일을 입력해주세요"); // Display error toast
+      return;
+    }
+    if (!city) {
+      toast.error("시를 입력해주세요"); // Display error toast
+      return;
+    }
+    if (!gu) {
+      toast.error("구를 입력해주세요"); // Display error toast
+      return;
+    }
+  };
 
   const [username, handleUsernameChange] = useInput("");
   const [email, handleEmailChange] = useInput("");
@@ -28,6 +60,18 @@ export const Signup = () => {
   const filteredGuOptions = guOptions.filter((option) => option.province === city?.value);
   const handleGuChange = (selectedOption) => {
     setGu(selectedOption);
+  };
+
+  const customStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      boxShadow: state.isFocused ? "0 0 0 1px #047857" : "#047857",
+      borderColor: state.isFocused ? "#047857" : "#6EE7B7",
+      borderWidth: "2px",
+      "&:hover": {
+        borderColor: state.isFocused ? "#047857" : "#047857",
+      },
+    }),
   };
 
   return (
@@ -74,6 +118,7 @@ export const Signup = () => {
           </label>
           <div className="flex">
             <Select
+              styles={customStyles}
               className="w-full mr-2"
               options={cityOptions}
               value={city}
@@ -82,6 +127,7 @@ export const Signup = () => {
               // isClearable={true}
             />
             <Select
+              styles={customStyles}
               className="w-full"
               options={filteredGuOptions}
               value={gu}
@@ -94,7 +140,7 @@ export const Signup = () => {
         </div>
 
         <div className="mt-5 w-2/3 p-3 px-4 rounded-md">
-          <GreenButton buttonText="Login" clickHandler={onLoginHandler} />
+          <GreenButton buttonText="Signup" clickHandler={onLoginHandler} />
         </div>
 
         <div className="flex items-center">

@@ -9,7 +9,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const [searchWord, setSearchWord] = useState("");
   const [dropdownState, setDropdownState] = useState(false);
-  console.log(searchWord);
+
   const handleSearch = () => {
     navigate(`/search?keyword=${encodeURIComponent(searchWord)}`);
     setSearchWord("");

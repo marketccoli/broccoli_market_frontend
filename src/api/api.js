@@ -1,39 +1,47 @@
-import { async } from "q";
 import axios from "./axios";
 
-const postTradeProduct = async (data) => {
+export const postTradeProduct = async (data) => {
   try {
-    const response = axios.post("/product", data);
-    console.log(response);
-    return response;
+    const formData = new FormData();
+    formData.append("photo", data);
+    formData.append("title", "Product Title 1");
+    formData.append("content", "Product Content 1");
+    formData.append("price", 10000);
+    formData.append("category", "카테고리 1");
+
+    await axios.post("/product", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log("Image upload successful");
+  } catch (error) {
+    console.error("Image upload failed");
+    console.error(error);
+  }
+};
+export const getTradeProduct = async (data) => {
+  try {
+    const response = await axios.get("/product");
+    return response.data.products;
   } catch (error) {
     console.log(error);
   }
 };
-const getTradeProduct = async (data) => {
-  try {
-    const response = axios.get("/product");
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getOneTradeProduct = async (productId) => {
+export const getOneTradeProduct = async (productId) => {
   try {
     const response = await axios.get(`/product/${productId}`, {
       params: {
         product_id: parseInt(productId),
       },
     });
-    console.log(response);
-    return response;
+    return response.data.product;
   } catch (error) {
     console.log(error);
   }
 };
 
-const editOneTradeProduct = async (productId, data) => {
+export const editOneTradeProduct = async (productId, data) => {
   try {
     const response = await axios.patch(`/product/${productId}`, data);
     console.log(response);
@@ -42,7 +50,8 @@ const editOneTradeProduct = async (productId, data) => {
     console.log(error);
   }
 };
-const deleteOneTradeProduct = async (productId) => {
+
+export const deleteOneTradeProduct = async (productId) => {
   try {
     const response = await axios.delete(`/product/${productId}`, {
       params: {
@@ -56,7 +65,7 @@ const deleteOneTradeProduct = async (productId) => {
   }
 };
 
-const toggleLikeTradeProduct = async () => {
+export const toggleLikeTradeProduct = async (productId) => {
   try {
     const response = await axios.put(`/product/${productId}`);
     console.log(response);
@@ -66,7 +75,7 @@ const toggleLikeTradeProduct = async () => {
   }
 };
 
-const searchProduct = async (keyword) => {
+export const searchProduct = async (keyword) => {
   try {
     const response = await axios.get(`/product/search?keyword=${keyword}`);
     console.log(response);
@@ -75,7 +84,7 @@ const searchProduct = async (keyword) => {
     console.log(error);
   }
 };
-const getProductListByCategory = async (category) => {
+export const getProductListByCategory = async (category) => {
   try {
     const response = await axios.get(`/products?category=${category}`);
     console.log(response);
@@ -84,7 +93,7 @@ const getProductListByCategory = async (category) => {
     console.log(error);
   }
 };
-const signupApi = async (signupData) => {
+export const signupApi = async (signupData) => {
   try {
     const response = await axios.post(`/auth/signup`, signupData);
     console.log(response);
@@ -93,7 +102,7 @@ const signupApi = async (signupData) => {
     console.log(error);
   }
 };
-const loginApi = async (loginData) => {
+export const loginApi = async (loginData) => {
   try {
     const response = await axios.post(`/auth/login`, loginData);
     console.log(response);
@@ -102,7 +111,7 @@ const loginApi = async (loginData) => {
     console.log(error);
   }
 };
-const socialLoginApi = async (key) => {
+export const socialLoginApi = async (key) => {
   try {
     const response = await axios.post(`/auth/sociallogin`, key);
     console.log(response);
@@ -111,7 +120,7 @@ const socialLoginApi = async (key) => {
     console.log(error);
   }
 };
-const withdrawalApi = async () => {
+export const withdrawalApi = async () => {
   try {
     const response = await axios.delete(`/auth/withdrawal`);
     console.log(response);
@@ -120,7 +129,7 @@ const withdrawalApi = async () => {
     console.log(error);
   }
 };
-const logoutApi = async (user_id) => {
+export const logoutApi = async (user_id) => {
   try {
     const response = await axios.delete(`/auth/${user_id}/logout`, {
       params: {
@@ -133,7 +142,7 @@ const logoutApi = async (user_id) => {
     console.log(error);
   }
 };
-const emailVerificationApi = async (email) => {
+export const emailVerificationApi = async (email) => {
   try {
     const response = await axios.post(`/auth/mail`, email);
     console.log(response);
@@ -142,7 +151,7 @@ const emailVerificationApi = async (email) => {
     console.log(error);
   }
 };
-const getMySoldProducts = async () => {
+export const getMySoldProducts = async () => {
   try {
     const response = await axios.get(`/mypage/sold`);
     console.log(response);
@@ -151,7 +160,7 @@ const getMySoldProducts = async () => {
     console.log(error);
   }
 };
-const getMyLikedProducts = async () => {
+export const getMyLikedProducts = async () => {
   try {
     const response = await axios.get(`/mypage/sold`);
     console.log(response);
@@ -160,7 +169,7 @@ const getMyLikedProducts = async () => {
     console.log(error);
   }
 };
-const getMyBoughtProducts = async () => {
+export const getMyBoughtProducts = async () => {
   try {
     const response = await axios.get(`/mypage/buy`);
     console.log(response);
@@ -169,7 +178,7 @@ const getMyBoughtProducts = async () => {
     console.log(error);
   }
 };
-const editMyInfo = async (data) => {
+export const editMyInfo = async (data) => {
   try {
     const response = await axios.patch(`/mypage`, data);
     console.log(response);
@@ -178,7 +187,7 @@ const editMyInfo = async (data) => {
     console.log(error);
   }
 };
-const deleteMyAccount = async () => {
+export const deleteMyAccount = async () => {
   try {
     const response = await axios.delete(`/mypage`);
     console.log(response);
