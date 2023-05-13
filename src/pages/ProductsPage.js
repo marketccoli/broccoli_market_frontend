@@ -1,10 +1,14 @@
 import React from "react";
+import { Footer } from "../Layout/Footer";
 
 export const ProductsPage = () => {
   return (
-    <section className="flex justify-center text-gray-600">
-      <div className="px-4 py-24 mx-7 min-w-[700px] max-w-[1200px]">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 p-2 auto-cols-max auto-rows-max h-full">
+    <section className="flex justify-center text-gray-600 min-w-[700px]">
+      <div className="px-4 py-24 mx-7 max-w-[1200px]">
+        {/* <div className="flex w-full justify-center"> */}
+        <span className="ml-3 text-2xl">중고 거래</span>
+        {/* </div> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2">
           <div className="p-4">
             <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
 
