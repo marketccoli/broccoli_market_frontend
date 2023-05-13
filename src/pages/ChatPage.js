@@ -3,6 +3,8 @@ import {
   EmptyBox, ChatDetail, LastCommentDetails, LastComment, SubText, YourNickname, YourInfo, ListA, ListLi, ListUl, MynameDiv, ListbarNav, SidebarNav, ChatList, ChatDiv, Img
 } from "../styles/chatPageSt";
 import JoinChat from "../components/JoinChat";
+import ChatButton from "../components/ChatButton";
+
 export const ChatPage = () => {
   return (
     <>
@@ -21,7 +23,6 @@ export const ChatPage = () => {
               <ListLi>
                 <ListA href=" ">
                   <div style={{ marginRight: "8px", height: " 40px" }}>
-                    상대 프로필 사진
                   </div>
                   <div style={{ flex: "1 0 0%", width: "0px" }}>
                     <YourInfo>
@@ -53,7 +54,7 @@ export const ChatPage = () => {
 
           </div>
         </ChatDetail>
-        <button>채팅하기</button>
+        <ChatButton seller_id="seller_id" buyer_id="buyer_id" />
         <div></div>
       </ChatDiv >
     </>
