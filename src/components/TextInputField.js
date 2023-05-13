@@ -7,9 +7,10 @@ export const TextInputField = ({ autofocus = false, inputLabel, inputType, place
       <input
         autoFocus={autofocus}
         type={inputType}
-        id={inputType}
+        id={inputLabel}
         name={placeholderText}
-        className="bg-green-50 border-2 border-green-300 placeholder-green-600  h-10 px-5 w-full mr-3 rounded-lg text-sm focus:border-none focus:ring-2 focus:ring-green-700 outline-none focus:bg-white text-green-900 transition-colors duration-200 ease-in-out ::placeholder:text-green-500"
+        className="bg-white border-2 border-green-300 placeholder-green-600 text-green-900 h-10 px-5 w-full mr-3 rounded-lg text-sm 
+        outline-none focus:border-none focus:ring-2 focus:ring-green-700  focus:bg-white transition-colors duration-200 ease-in-out ::placeholder:text-green-500"
         placeholder={placeholderText}
         value={value}
         onChange={handleInputChange}
