@@ -1,5 +1,4 @@
 import React from "react";
-import { Footer } from "../Layout/Footer";
 
 export const ProductsPage = () => {
   return (

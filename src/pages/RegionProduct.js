@@ -23,7 +23,14 @@ export const RegionProduct = () => {
           <div className="pl-4 flex items-center justify-between ">
             <span className="text-2xl">지역 매물</span>
             <div className="flex w-full max-w-[330px]">
-              <Select className="w-full mr-2" options={cityOptions} value={city} onChange={handleCityChange} placeholder="시" isClearable={true} />
+              <Select
+                className="w-full mr-2"
+                options={cityOptions}
+                value={city}
+                onChange={handleCityChange}
+                placeholder="시"
+                // isClearable={true}
+              />
               <Select
                 className="w-full"
                 options={filteredGuOptions}
@@ -31,7 +38,7 @@ export const RegionProduct = () => {
                 onChange={handleGuChange}
                 placeholder="구"
                 isDisabled={!city}
-                isClearable={true}
+                // isClearable={true}
               />
             </div>
           </div>
