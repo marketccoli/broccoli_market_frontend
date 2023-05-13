@@ -1,13 +1,9 @@
 export const dateConvert = (date) => {
-  const createdDate = new Date(date);
-  const formattedDate = createdDate.toLocaleString("en-US", {
-    month: "long",
+  return new Date(date).toLocaleString("en-GB", {
     day: "numeric",
+    month: "numeric",
     year: "numeric",
     hour: "numeric",
     minute: "numeric",
-    second: "numeric",
   });
-
-  return formattedDate;
 };

@@ -1,8 +1,21 @@
 import { useState } from "react";
 import Select from "react-select";
 import { cityOptions, guOptions } from "../utils/regionList";
+import { ProductCard } from "../components/ProductCard";
 
 export const RegionProduct = () => {
+  const product = {
+    product_id: 1,
+    title: "타이틀1",
+    address: "서울시 용산구",
+    price: "15000",
+    category: "전자제품",
+    likes: 10,
+    views: 50,
+    createdAt: "2022-07-25T07:45:56.000Z",
+    is_sold: false,
+    photo_ip: "https://dummyimage.com/420x260",
+  };
   const [city, setCity] = useState(null);
   const [gu, setGu] = useState(null);
 
@@ -16,6 +29,7 @@ export const RegionProduct = () => {
   const handleGuChange = (selectedOption) => {
     setGu(selectedOption);
   };
+
   return (
     <div>
       <section className="flex justify-center text-gray-600 min-w-[700px]">
@@ -43,60 +57,13 @@ export const RegionProduct = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2">
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
-            <div className="p-4">
-              <img alt="ecommerce" className="object-cover object-center w-full" src="https://dummyimage.com/420x260" />
-
-              <div className="mt-4">
-                <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">카테고리</h3>
-                <h2 className="text-gray-900 title-font text-lg font-medium">Title</h2>
-                <p className="mt-1">10,000원</p>
-              </div>
-            </div>
+            <ProductCard product={product} />
+            <ProductCard product={product} />
+            <ProductCard product={product} />
+            <ProductCard product={product} />
+            <ProductCard product={product} />
+            <ProductCard product={product} />
+            <ProductCard product={product} />
           </div>
         </div>
       </section>
