@@ -1,7 +1,6 @@
 import { io } from "socket.io-client";
 import React, { useState } from "react";
 import Chatroom from '../components/Chatroom';
-
 const socket = io.connect("http://localhost:3002");
 
 function JoinChat() {
@@ -24,10 +23,10 @@ function JoinChat() {
             {/*username, room 정보를 입력할 수 있는 input 태그와 joinRoom 함수를 실행하는 버튼을 출력 */}
             {!showChat ? (
                 <div>
-                    <h3> Join A Chat</h3>
-                    <input type="text" placeholder="John..." onChange={(event) => { setUsername(event.target.value) }}></input>
-                    <input type="text" placeholder="Room Id..." onChange={(event) => { setRoom(event.target.value) }}></input>
-                    <button onClick={joinRoom}>Join A Room</button>
+                    <h3> 채팅참가</h3>
+                    <input type="text" placeholder="이름 입력" onChange={(event) => { setUsername(event.target.value) }}></input>
+                    <input type="text" placeholder="Room Id" onChange={(event) => { setRoom(event.target.value) }}></input>
+                    <button onClick={joinRoom}>채팅에 참여하기</button>
                 </div>
             ) : (
                 < Chatroom socket={socket} username={username} room={room} />
