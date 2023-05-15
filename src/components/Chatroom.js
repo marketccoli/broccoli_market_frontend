@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import ScrollToBottom from "react-scroll-to-bottom"
 import { MessageMeta, MessageContent, MessageWrapper, MessageContainer, InputMessage, TIme, Content, MessageButton, FooterForm } from "../styles/chatroomSt"
+import { useDispatch } from 'react-redux';
+import { addChatContents } from '../redux/modules/chatSlice';
 
-function Chatroom({ socket, username, room }) {
+function Chatroom({ socket, username, room, chat_id }) {
+    const dispatch = useDispatch();
     //Chat 컴포넌트는 socket, username, room이라는 세 개의 props를 받음
     // socket prop은 Socket.IO의 클라이언트 측 객체. username prop은 채팅에 참여하는 사용자의 이름 room prop은 사용자가 참여하려는 채팅방의 ID
     const [currentMessage, setCurrentMessage] = useState("")
@@ -14,14 +17,17 @@ function Chatroom({ socket, username, room }) {
         //  현재 메시지와 함께 소켓 이벤트 "send_message"를 발생시킴.이 이벤트는 서버 측에서 처리
         if (currentMessage !== "") {
             const messageData = {
+                chat_id: chat_id,
                 room: room,
                 author: username,
                 message: currentMessage,
                 time: new Date(Date.now()).getHours() + ":" + new Date(Date.now()).getMinutes(),
             }
+
             await socket.emit("send_message", messageData)
             //클라이언트가 send_message라는 이벤트를 서버로 보내는 역할. 보낼 데이터는 messageData변수에 저장되어있음
             setMessageList((list) => [...list, messageData])
+            dispatch(addChatContents(messageData))
             setCurrentMessage("")
         }
     }
