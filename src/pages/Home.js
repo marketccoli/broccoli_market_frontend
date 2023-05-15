@@ -1,10 +1,17 @@
 import React from "react";
+import { GreenButton } from "../components/common/GreenButton";
+import { useNavigate } from "react-router";
 
 export const Home = () => {
+  const navigate = useNavigate();
   return (
-    <section className="flex justify-center  text-gray-600">
-      <div className="flex justify-center items-center px-4 py-24 mx-7 min-w-[700px] max-w-[1200px]">
-        <span>Home</span>
+    <section className="flex justify-center items-center bg-[#e5ffde] text-green-900 py-20 h-screen">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col items-center">
+          <h1 className="text-4xl font-bold mb-6">당신 근처의 브로콜리 마켓</h1>
+          <p className="text-lg mb-8">중고 거래부터 동네 정보까지, 이웃과 함께해요. 가깝고 따뜻한 당신의 근처를 만들어요.</p>
+          <GreenButton buttonText="시작하기" clickHandler={() => navigate("/login")} />
+        </div>
       </div>
     </section>
   );

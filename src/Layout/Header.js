@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { Broccoli } from "../assets/icons/Broccoli";
 import { useEffect, useState } from "react";
-import { GreenButton } from "../components/GreenButton";
+import { GreenButton } from "../components/common/GreenButton";
 import { DropdownMenu } from "../components/DropdownMenu";
-import { ClickableTextHighlight } from "../components/ClickableTextHighlight";
+import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
 export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -37,7 +37,9 @@ export const Header = () => {
       <div className=" flex p-1 flex-row items-center justify-between px-4 h-16">
         <div className="flex p-5 items-center justify-center">
           <div onClick={() => handlePageChange(0)} className="cursor-pointer flex title-font font-bold items-center text-green-900 mb-0">
-            <Broccoli width={"30px"} height={"30px"} />
+            <div className="min-w-[30px]">
+              <Broccoli width={"30px"} height={"30px"} />
+            </div>
             <span className="ml-3 text-xl">Broccoli Market</span>
           </div>
           <nav className=" ml-4 py-1 pl-4  border-l rounded-l-xs border-green-400 border-opacity-40 flex flex-wrap items-center text-base justify-center">
@@ -48,13 +50,13 @@ export const Header = () => {
               지역 매물
             </ClickableTextHighlight>
           </nav>
-          <div className="relative ml-10 pr-3 flex items-center ">
+          <div className="relative ml-5 pr-3 flex items-center min-w-[120px]">
             <input
               type="text"
               value={searchWord}
               onChange={(e) => setSearchWord(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="bg-[#f4fff5] border-2 placeholder-green-600  border-green-300 h-10 px-5 w-full mr-3 rounded-lg text-sm focus:border-none focus:ring-2 focus:ring-[#daffdb] outline-none focus:bg-white text-green-900 transition-colors duration-200 ease-in-out ::placeholder:text-green-500"
+              className="bg-[#f4fff5] border-2 placeholder-green-600  border-green-300 h-10 px-4 w-full mr-3 rounded-lg text-sm focus:border-none focus:ring-2 focus:ring-[#daffdb] outline-none focus:bg-white text-green-900 transition-colors duration-200 ease-in-out ::placeholder:text-green-500"
               placeholder="Search..."
             />
 

@@ -1,83 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { Sell } from "../components/Mypage/Sell";
 
 export const Mypage = () => {
+  // myinfo, selling, liked, bought
+  const [activeTab, setActiveTab] = useState("myInfo");
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
   return (
-    <div className="container flex justify-center mx-auto">
-      <div className="flex flex-col">
-        {/* <div className="w-full">
-          <div className="border-b border-gray-200 shadow">
-            <table className="divide-y divide-gray-300">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-2 text-xs text-gray-500">ID</th>
-                  <th className="px-6 py-2 text-xs text-gray-500">Name</th>
-                  <th className="px-6 py-2 text-xs text-gray-500">Email</th>
-                  <th className="px-6 py-2 text-xs text-gray-500">Created_at</th>
-                  <th className="px-6 py-2 text-xs text-gray-500">Edit</th>
-                  <th className="px-6 py-2 text-xs text-gray-500">Delete</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-300">
-                <tr className="whitespace-nowrap">
-                  <td className="px-6 py-4 text-sm text-gray-500">1</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">Jon doe</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500">jhondoe@example.com</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">2021-1-12</td>
-                  <td className="px-6 py-4">
-                    <div className="px-4 py-1 text-sm text-indigo-600 bg-indigo-200 rounded-full">Edit</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">Delete</div>
-                  </td>
-                </tr>
-                <tr className="whitespace-nowrap">
-                  <td className="px-6 py-4 text-sm text-gray-500">1</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">Jon doe</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500">jhondoe@example.com</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">2021-1-12</td>
-                  <td className="px-6 py-4">
-                    <div href="#" className="px-4 py-1 text-sm text-indigo-600 bg-indigo-200 rounded-full">
-                      Edit
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div href="#" className="px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">
-                      Delete
-                    </div>
-                  </td>
-                </tr>
-                <tr className="whitespace-nowrap">
-                  <td className="px-6 py-4text-sm text-gray-500">1</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">Jon doe</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-500">jhondoe@example.com</div>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">2021-1-12</td>
-                  <td className="px-6 py-4">
-                    <div href="#" className="px-4 py-1 text-sm text-indigo-600 bg-indigo-200 rounded-full">
-                      Edit
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div href="#" className="px-4 py-1 text-sm text-red-400 bg-red-200 rounded-full">
-                      Delete
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> */}
+    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
+      <div className="px-4 py-24 mx-7 max-w-[700px] w-full">
+        <div className="w-full">
+          <button
+            className={`px-4 py-2 mr-2 ${activeTab === "myInfo" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            onClick={() => handleTabChange("myInfo")}
+          >
+            My Info
+          </button>
+          <button
+            className={`px-4 py-2 mr-2 ${activeTab === "selling" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            onClick={() => handleTabChange("selling")}
+          >
+            Selling
+          </button>
+          <button
+            className={`px-4 py-2 mr-2 ${activeTab === "liked" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            onClick={() => handleTabChange("liked")}
+          >
+            Liked
+          </button>
+          <button
+            className={`px-4 py-2 mr-2 ${activeTab === "bought" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
+            onClick={() => handleTabChange("bought")}
+          >
+            Bought
+          </button>
+        </div>
+
+        {activeTab === "myInfo" && <div>My Info Tab Content</div>}
+        {activeTab === "selling" && <Sell />}
+        {activeTab === "liked" && <div>Liked Tab Content</div>}
+        {activeTab === "bought" && <div>Bought Tab Content</div>}
       </div>
     </div>
   );
