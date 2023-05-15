@@ -1,8 +1,7 @@
 import { useState } from "react";
 import Select from "react-select";
 import { cityOptions, guOptions } from "../utils/regionList";
-import { ProductCard } from "../components/ProductCard";
-
+import { ProductCard } from "../components/common/ProductCard";
 
 export const RegionProduct = () => {
   const product = {

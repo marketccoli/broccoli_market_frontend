@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "../components/common/ProductCard";
 
 export const SearchProduct = () => {
   const [searchParams] = useSearchParams();

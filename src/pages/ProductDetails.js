@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import { getOneTradeProduct } from "../api/api";
+import { deleteOneTradeProduct, getOneTradeProduct } from "../api/api";
 import { dateConvert } from "../utils/dateConvert";
 import { AiFillHeart } from "react-icons/ai";
 import { GrView } from "react-icons/gr";
+import { GreenButton } from "../components/common/GreenButton";
 // {
 //   "product” : {
 //     “title” : “타이틀1”,
@@ -23,6 +24,12 @@ import { GrView } from "react-icons/gr";
 // }
 export const ProductDetails = () => {
   const [product, setProduct] = useState();
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   const param = useParams();
   const { data } = useQuery(`product${param.id}`, () => getOneTradeProduct(param.id), {
     refetchOnWindowFocus: false,
@@ -37,46 +44,51 @@ export const ProductDetails = () => {
   }, [data]);
 
   return (
-    <div className="p-4 mt-16">
-      {product && (
-        <>
-          <div className="flex items-center justify-center">
-            <img alt="product" className="object-cover h-64 w-64 rounded-lg" src={product.photo_ip} />
-          </div>
-          <div className="mt-4">
-            <h2 className="text-2xl font-bold">{product.title}</h2>
-            <p className="text-lg mt-2 text-gray-700">{product.price.toLocaleString()}원</p>
-            <span className="text-sm text-gray-500">{product.category}</span>
-            <div className="flex items-center mt-4">
-              <AiFillHeart className="mr-1 text-red-500" />
-              <span className="text-sm">{product.likes}</span>
-              <GrView className="ml-4 text-sm text-gray-500" />
-              <span className="text-sm">{product.views}</span>
+    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
+      <div className="px-4 py-24 mx-7 max-w-[1200px] ">
+        <GreenButton buttonText="Delete" clickHandler={() => deleteOneTradeProduct(1)} />
+        {product && (
+          <>
+            <div className="min-h-[400px] min-w-[400px] h-[500px]">
+              {!imageError ? (
+                <img alt="product" className="object-cover h-full rounded-lg" src={product.photo_ip} onError={handleImageError} />
+              ) : (
+                <img alt="Placeholder" className="object-cover w-full h-full rounded-md" src="https://via.placeholder.com/420x260?text=Image" />
+              )}
             </div>
+            <div className="border-b border-gradient w-full mb-4"></div>
             <div className="mt-4">
-              <h3 className="text-lg font-medium">상품 설명</h3>
-              <p className="mt-2 text-gray-700">{product.content}</p>
-            </div>
-            <div className="mt-4">
-              <h3 className="text-lg font-medium">판매 정보</h3>
-              <ul className="mt-2 text-gray-700">
-                <li>
-                  <span className="font-medium">카테고리:</span> {product.category}
-                </li>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-medium">판매 정보</h3>
+                <span className="font-medium">등록일: {dateConvert(product.createdAt)}</span>
+              </div>
+              <ul className="mt-2 text-gray-700 text-sm pl-1">
                 <li>
                   <span className="font-medium">지역:</span> {product.address}
                 </li>
                 <li>
                   <span className="font-medium">판매 여부:</span> {product.is_sold ? "판매 완료" : "판매 중"}
                 </li>
-                <li>
-                  <span className="font-medium">등록일:</span> {dateConvert(product.createdAt)}
-                </li>
               </ul>
             </div>
-          </div>
-        </>
-      )}
+            <div className="mt-4">
+              <div className="border-b border-gradient w-full mb-4"></div>
+              <h2 className="text-2xl font-bold">{product.title}</h2>
+              <p className="text-xs my-2 text-gray-500">{product.category}</p>
+              <p className="text-lg font-bold text-gray-700">{product.price.toLocaleString()}원</p>
+              <div className="mt-4 pl-1">
+                <p className="mt-2 text-gray-700">{product.content}</p>
+              </div>
+              <div className="flex items-center mt-4">
+                <AiFillHeart className="mr-1 text-red-500" />
+                <span className="text-sm">{product.likes}</span>
+                <GrView className="ml-4 mr-1 text-sm text-gray-500" />
+                <span className="text-sm">{product.views}</span>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

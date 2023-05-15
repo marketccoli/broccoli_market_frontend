@@ -3,11 +3,11 @@ import axios from "./axios";
 export const postTradeProduct = async (data) => {
   try {
     const formData = new FormData();
-    formData.append("photo", data);
-    formData.append("title", "Product Title 1");
-    formData.append("content", "Product Content 1");
-    formData.append("price", 10000);
-    formData.append("category", "카테고리 1");
+    formData.append("photo", data.photo);
+    formData.append("title", data.title);
+    formData.append("content", data.content);
+    formData.append("price", data.price);
+    formData.append("category", data.category);
 
     await axios.post("/product", formData, {
       headers: {
@@ -87,109 +87,6 @@ export const searchProduct = async (keyword) => {
 export const getProductListByCategory = async (category) => {
   try {
     const response = await axios.get(`/products?category=${category}`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const signupApi = async (signupData) => {
-  try {
-    const response = await axios.post(`/auth/signup`, signupData);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const loginApi = async (loginData) => {
-  try {
-    const response = await axios.post(`/auth/login`, loginData);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const socialLoginApi = async (key) => {
-  try {
-    const response = await axios.post(`/auth/sociallogin`, key);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const withdrawalApi = async () => {
-  try {
-    const response = await axios.delete(`/auth/withdrawal`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const logoutApi = async (user_id) => {
-  try {
-    const response = await axios.delete(`/auth/${user_id}/logout`, {
-      params: {
-        user_id: parseInt(user_id),
-      },
-    });
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const emailVerificationApi = async (email) => {
-  try {
-    const response = await axios.post(`/auth/mail`, email);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const getMySoldProducts = async () => {
-  try {
-    const response = await axios.get(`/mypage/sold`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const getMyLikedProducts = async () => {
-  try {
-    const response = await axios.get(`/mypage/sold`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const getMyBoughtProducts = async () => {
-  try {
-    const response = await axios.get(`/mypage/buy`);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const editMyInfo = async (data) => {
-  try {
-    const response = await axios.patch(`/mypage`, data);
-    console.log(response);
-    return response;
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const deleteMyAccount = async () => {
-  try {
-    const response = await axios.delete(`/mypage`);
     console.log(response);
     return response;
   } catch (error) {

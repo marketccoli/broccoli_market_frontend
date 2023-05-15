@@ -1,55 +1,76 @@
 import { useNavigate } from "react-router-dom";
 import { Broccoli } from "../assets/icons/Broccoli";
-import { TextInputField } from "../components/TextInputField";
-import { GreenButton } from "../components/GreenButton";
+import { TextInputField } from "../components/common/TextInputField";
+import { GreenButton } from "../components/common/GreenButton";
 import { useInput } from "../hooks/useInput";
-import { ClickableTextHighlight } from "../components/ClickableTextHighlight";
-import { useState } from "react";
+import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
+import { useEffect, useState } from "react";
 import { cityOptions, guOptions } from "../utils/regionList";
 import { toast } from "react-toastify";
 import Select from "react-select";
+import { emailVerificationApi, signupApi } from "../api/auth";
+import { useMutation } from "react-query";
+import { LoadingSpinner } from "../utils/LoadingSpinner";
 
 export const Signup = () => {
   const navigate = useNavigate();
 
-  const onLoginHandler = (e) => {
-    if (!username) {
-      toast.error("아이디를 입력해주세요"); // Display error toast
-      return;
-    }
-    if (!password) {
-      toast.error("비밀번호를 입력해주세요"); // Display error toast
-      return;
-    }
-
-    if (password !== passwordChecker) {
-      toast.error("비밀번호가 일치하지 않습니다"); // Display error toast
-      return;
-    }
-    if (!nickname) {
-      toast.error("닉네임을 입력해주세요"); // Display error toast
-      return;
-    }
-    if (!email) {
-      toast.error("이메일을 입력해주세요"); // Display error toast
-      return;
-    }
-    if (!city) {
-      toast.error("시를 입력해주세요"); // Display error toast
-      return;
-    }
-    if (!gu) {
-      toast.error("구를 입력해주세요"); // Display error toast
-      return;
-    }
+  const onSignupHandler = (e) => {
+    if (!username) return toast.error("아이디를 입력해주세요");
+    if (!password) return toast.error("비밀번호를 입력해주세요");
+    if (password !== passwordChecker) return toast.error("비밀번호가 일치하지 않습니다");
+    if (!nickname) return toast.error("닉네임을 입력해주세요");
+    if (!email) return toast.error("이메일을 입력해주세요");
+    if (!city) return toast.error("시를 입력해주세요");
+    if (!gu) return toast.error("구를 입력해주세요");
+    signupMutation.mutate({ id: username, password, nickname, email, address: `${city} ${gu}`, authCode: verificationNumber });
   };
+
+  const signupMutation = useMutation(signupApi, {
+    onSuccess: () => {
+      toast.success("Signup successful");
+      navigate("/");
+    },
+    onError: (error) => {
+      toast.error(error.response.data.errorMessage);
+    },
+  });
 
   const [username, handleUsernameChange] = useInput("");
   const [email, handleEmailChange] = useInput("");
   const [nickname, handleNicknameChange] = useInput("");
   const [password, handlePasswordChange] = useInput("");
   const [passwordChecker, handlePasswordCheckerChange] = useInput("");
-  const sendEmailVerification = () => {};
+  const [verificationNumber, setVerificationNumber] = useState("");
+  const [showVerificationInput, setShowVerificationInput] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(300); // 5 minutes in seconds
+
+  const sendEmailVerification = async () => {
+    await emailVerificationApi(email);
+    setShowVerificationInput(true);
+    startTimer();
+  };
+
+  const startTimer = () => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => prevTime - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  };
+
+  useEffect(() => {
+    if (remainingTime === 0) {
+      setShowVerificationInput(false);
+      // Perform any necessary actions when the timer expires
+    }
+  }, [remainingTime]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds % 60).padStart(2, "0");
+    return `${formattedMinutes}:${formattedSeconds}`;
+  };
 
   const [city, setCity] = useState(null);
   const [gu, setGu] = useState(null);
@@ -76,6 +97,7 @@ export const Signup = () => {
 
   return (
     <div className="flex  items-center h-screen justify-between">
+      {signupMutation.isLoading && <LoadingSpinner />}
       <div className="flex justify-center items-center w-full h-full bg-green-100">
         <Broccoli height="400px" width="400px" />
       </div>
@@ -112,6 +134,24 @@ export const Signup = () => {
             <GreenButton buttonText="인증하기" size="sm" clickHandler={sendEmailVerification} />
           </div>
         </div>
+        {/* Verification Input */}
+        {showVerificationInput && (
+          <TextInputField
+            inputLabel="Verification Number"
+            inputType="text"
+            placeholderText="인증번호를 입력해주세요"
+            value={verificationNumber}
+            handleInputChange={(e) => setVerificationNumber(e.target.value)}
+          />
+        )}
+
+        {/* Timer */}
+        {showVerificationInput && (
+          <div className="w-2/3 flex items-end px-4 pt-1">
+            <div className="mr-2 text-gray-600 text-sm">남은 시간:</div>
+            <div className="text-gray-600 text-sm font-bold">{formatTime(remainingTime)}</div>
+          </div>
+        )}
         <div name="Selector" className="w-2/3 px-4 mt-3">
           <label htmlFor="Selector" className="leading-7 text-sm text-gray-600">
             Address
@@ -140,7 +180,7 @@ export const Signup = () => {
         </div>
 
         <div className="mt-5 w-2/3 p-3 px-4 rounded-md">
-          <GreenButton buttonText="Signup" clickHandler={onLoginHandler} />
+          <GreenButton buttonText="Signup" clickHandler={onSignupHandler} />
         </div>
 
         <div className="flex items-center">

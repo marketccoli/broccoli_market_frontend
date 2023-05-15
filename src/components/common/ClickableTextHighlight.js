@@ -6,16 +6,16 @@ export const ClickableTextHighlight = ({ children, onClickHandler, selectionHigh
       {selectionHighlight ? (
         <div
           onClick={onClickHandler}
-          className={`cursor-pointer mr-5 font-bold ${
-            selectionHighlight ? "text-green-600" : "text-green-800"
-          } hover:text-green-600 transition-colors duration-200 ease`}
+          className={`cursor-pointer mr-5 font-bold text-lg  ${
+            selectionHighlight ? "text-green-500" : "text-green-700"
+          } hover:text-green-500 transition-colors duration-200 ease`}
         >
           {children}
         </div>
       ) : (
         <div
           onClick={onClickHandler}
-          className={`cursor-pointer mr-5 font-bold text-green-800 hover:text-green-600 transition-colors duration-200 ease`}
+          className={`cursor-pointer mr-5 font-bold text-lg text-green-700 hover:text-green-500 transition-colors duration-200 ease`}
         >
           {children}
         </div>

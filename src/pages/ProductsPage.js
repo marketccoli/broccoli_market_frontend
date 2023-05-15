@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard } from "../components/common/ProductCard";
 import { getTradeProduct } from "../api/api";
 import { useQuery } from "react-query";
 
@@ -26,7 +26,7 @@ export const ProductsPage = () => {
     }
   }, [data]);
   return (
-    <section className="flex justify-center text-gray-600 min-w-[700px] w-full">
+    <section className="flex justify-center text-gray-600 min-w-[700px] w-full ">
       <div className="px-4 py-24 mx-7 max-w-[1200px] ">
         {/* <div className="flex w-full justify-center"> */}
         <span className="ml-3 text-2xl">중고 거래</span>
