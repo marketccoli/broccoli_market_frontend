@@ -1,22 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// 자신의 전체 채팅 목록 조회 
+// 자신의 전체 채팅 목록 조회
 export const fetchChatLists = createAsyncThunk(
     'chat/fetchChatLists',
-    //로그인한 사용자의 아이디값을 가져와서 user.id변수에 저장
+    //로그인한 사용자의 아이디값을 가져와서 user_id변수에 저장
     async (_, { getState }) => {
-        const user_id = getState().user.id;
-        const response = await axios.get('/api/chat', {
-            //객체의 params 속성에  { user_id }를 전달해서 get요청보내기
+        const user_id = getState().user.user_id;
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/chat`, {
             params: { user_id }
-            //서버에서 현재 로그인한 사용자의 채팅목록만 가져올 수 있음
         });
+        console.log(response);
         return response.data.chatLists;
     }
 );
 
-// 새로운 1:1채팅 생성 
+
+
+// 새로운 1:1채팅 생성
 export const createChat = createAsyncThunk(
     'chat/createChat',
     async ({ product_id, buyer_id, buyer_nickname, seller_id, seller_nickname, title, address }) => {
@@ -32,7 +33,7 @@ export const createChat = createAsyncThunk(
     }
 );
 
-//1:1채팅 내역 조회 
+//1:1채팅 내역 조회
 export const fetchChat = createAsyncThunk(
     'chat/fetchChat ',
     async (chat_id) => {
@@ -47,13 +48,20 @@ export const addChatContents = createAsyncThunk(
     async ({ chat_id, content, user_id }) => {
         const createdAt = new Date().toISOString();
         const response = await axios.patch(`/api/chat/${chat_id}`, {
-            content,
-            createdAt,
-            user_id,
+            chat_id,
+            contents: [
+                {
+                    content,
+                    user_id,
+                    createdAt,
+                },
+
+            ],
         });
         return response.data.updatedChat;
     }
 );
+
 
 const chatSlice = createSlice({
     name: 'chat',
@@ -108,14 +116,13 @@ const chatSlice = createSlice({
                 state.isLoading = true;
             })
 
-            //현재 상태의 chatLsits 배열에서 수정된 대화방 객체 비교 
+            //현재 상태의 chatLsits 배열에서 수정된 대화방 객체 비교
             .addCase(addChatContents.fulfilled, (state, action) => {
                 const { chatLists } = state;
-                //chatLists 배열의 모든 요소를 반복하면서 수정된 대화방 객체와 같은 chat_id 속성을 가진 대화방이 배열에서 몇번째 인덱스에 위치해있는지 찾음  
+                //chatLists 배열의 모든 요소를 반복하면서 수정된 대화방 객체와 같은 chat_id 속성을 가진 대화방이 배열에서 몇번째 인덱스에 위치해있는지 찾음
                 const { updatedChat } = action.payload;
                 const chatIndex = chatLists.findIndex((chat) => chat.chat_id === updatedChat.chat_id);
 
-                //찾으면 chatLists에서 대화방 객체의 chat_coments 배열을
                 // chatLists[chatIndex].chat_contents에 추가
 
                 //그 다음 chatLists와 selectedChat 상태를 업데이트
