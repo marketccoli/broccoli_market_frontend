@@ -1,15 +1,23 @@
 import axios from "axios";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 const API_URL = process.env.REACT_APP_SERVER_URL;
 
 const instance = axios.create({
   baseURL: API_URL,
+  withCredentials: true, // Add this line to enable sending cookies
 });
 
-// const token = Cookies.get("access");
-// // console.log(token);
-// if (token) {
-//   instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-// }
+// Add an interceptor to include tokens in the request headers
+instance.interceptors.request.use((config) => {
+  const accessToken = Cookies.get("authorization");
+  const refreshToken = Cookies.get("refreshToken");
+  console.log(refreshToken, accessToken);
+  if (accessToken && refreshToken) {
+    config.headers.cookie = `access_token=${accessToken}; refresh_token=${refreshToken}`;
+  }
+
+  return config;
+});
+
 export default instance;

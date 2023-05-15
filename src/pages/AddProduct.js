@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BsCardImage } from "react-icons/bs";
 import { GreenButton } from "../components/common/GreenButton";
-import { postTradeProduct } from "../api/api";
+import { postTradeProduct } from "../api/product";
 import { TextInputField } from "../components/common/TextInputField";
 import { useInput } from "../hooks/useInput";
 
@@ -42,46 +42,48 @@ export const AddProduct = () => {
     postTradeProduct({ title, content, price, category, photo: image });
   };
   return (
-    <div className="flex  ">
-      <div className="px-5 grid gap-8 grid-cols-1 lg:grid-cols-2 py-24 mx-auto text-gray-900 rounded-lg min-w-[700px] h-full">
-        {/* image part */}
+    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
+      <h2 className="px-56 text-xl my-3">상품등록</h2>
+      <div className="px-4 py-24 mx-7 max-w-[700px] w-full">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 text-gray-900 rounded-lg min-w-[700px] max-w-[1200px] w-full h-full px-24">
+          {/* image part */}
 
-        <div className="flex w-full justify-center items-center px-10 ">
-          <div className="flex relative justify-center rounded-lg items-center mb-4 mt-12 ">
-            <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageChange} />
-            <label htmlFor="imageInput" className="cursor-pointer absolute inset-0 w-full h-full rounded-lg" title="Upload Image"></label>
+          <div className="flex justify-center items-center bg-gray-100 rounded-lg min-h-[300px] ">
+            <label htmlFor="imageInput" className="flex justify-center items-center cursor-pointer w-full h-full rounded-lg" title="Upload Image">
+              <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageChange} />
 
-            {view ? (
-              <img className="w-full h-full rounded-lg object-cover shadow-md" src={view} alt="" />
-            ) : (
-              <div className="flex justify-center items-center rounded-lg  shadow-sm">
-                <BsCardImage />
-              </div>
-            )}
+              {view ? (
+                <img className="w-full h-full rounded-lg object-cover shadow-md" src={view} alt="" />
+              ) : (
+                <div className="flex justify-center items-center rounded-lg">
+                  <BsCardImage />
+                </div>
+              )}
+            </label>
           </div>
-        </div>
 
-        {/* body part */}
-        <div className="flex flex-col items-center justify-center">
-          <TextInputField
-            autofocus={true}
-            inputLabel="Title"
-            inputType="text"
-            placeholderText="제목"
-            value={title}
-            handleInputChange={handleTitleChange}
-          />
-          <TextInputField inputLabel="Content" inputType="text" placeholderText="내용" value={content} handleInputChange={handleContentChange} />
-          <TextInputField inputLabel="Price" inputType="text" placeholderText="가격" value={price} handleInputChange={handlePriceChange} />
-          <TextInputField
-            inputLabel="Category"
-            inputType="text"
-            placeholderText="카테고리"
-            value={category}
-            handleInputChange={handleCategoryChange}
-          />
-          <div className="w-2/3 px-4 mt-5">
-            <GreenButton buttonText="추가" clickHandler={handleSubmit} />
+          {/* body part */}
+          <div className="flex flex-col items-center justify-center">
+            <TextInputField
+              autofocus={true}
+              inputLabel="Title"
+              inputType="text"
+              placeholderText="제목"
+              value={title}
+              handleInputChange={handleTitleChange}
+            />
+            <TextInputField inputLabel="Content" inputType="text" placeholderText="내용" value={content} handleInputChange={handleContentChange} />
+            <TextInputField inputLabel="Price" inputType="text" placeholderText="가격" value={price} handleInputChange={handlePriceChange} />
+            <TextInputField
+              inputLabel="Category"
+              inputType="text"
+              placeholderText="카테고리"
+              value={category}
+              handleInputChange={handleCategoryChange}
+            />
+            <div className="w-2/3 px-4 mt-5">
+              <GreenButton buttonText="추가" clickHandler={handleSubmit} />
+            </div>
           </div>
         </div>
       </div>
