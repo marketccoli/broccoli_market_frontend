@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { async } from "q";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 export const AddProduct = () => {
   const [image, setImage] = useState("");
@@ -62,20 +63,30 @@ export const AddProduct = () => {
     addProductMutate.mutate({ title, content, price, category, photo: image });
   };
   return (
-    <div className="flex justify-center text-gray-600 min-w-[700px]  w-full ">
-      {/* <h2 className="px-56 text-xl my-3">상품등록</h2> */}
-      <div className="px-4 py-24 mx-7 max-w-[700px] w-full">
-        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 text-gray-900 rounded-lg w-full h-full px-24">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-col justify-center items-center text-gray-600 min-w-[700px] "
+    >
+      <h2 className="px-56 text-xl my-3">상품등록</h2>
+      <div className="px-4 py-24 mx-7 ">
+        <div className="flex flex-col">
           {/* image part */}
 
-          <div className="flex justify-center items-center bg-gray-100 rounded-lg w-full ">
-            <label htmlFor="imageInput" className="flex justify-center items-center cursor-pointer w-full h-full rounded-lg" title="Upload Image">
+          <div className="flex justify-center items-center rounded-lg w-[500px] h-[300px] mx-10">
+            <label
+              htmlFor="imageInput"
+              className="flex justify-center items-center cursor-pointer w-full h-full rounded-lg mx-10 min-h-[300px] bg-[#f1ffe9] hover:bg-[#e5f2dd] transition-colors duration-200 ease"
+              title="Upload Image"
+            >
+              {view ? "" : "이미지 업로드"}
               <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageChange} />
-
               {view ? (
-                <img className="w-full h-full rounded-lg object-cover shadow-md" src={view} alt="" />
+                <img className="rounded-lg object-cover shadow-md w-full h-full mx-10" src={view} alt="" />
               ) : (
-                <div className="flex justify-center items-center rounded-lg">
+                <div className="flex justify-center items-center rounded-lg ml-3">
                   <BsCardImage />
                 </div>
               )}
@@ -107,6 +118,6 @@ export const AddProduct = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

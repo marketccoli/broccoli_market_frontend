@@ -10,6 +10,7 @@ import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
+import { motion } from "framer-motion";
 
 export const Login = () => {
   const [username, handleUsernameChange] = useInput("");
@@ -30,7 +31,13 @@ export const Login = () => {
     loginMutation.mutate({ id: username, password });
   };
   return (
-    <div className="flex  items-center h-screen justify-between min-w-[760px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex  items-center h-screen justify-between min-w-[760px]"
+    >
       <div className="flex justify-center items-center w-full h-full bg-green-100">
         <Broccoli height="400px" width="400px" />
       </div>
@@ -69,6 +76,6 @@ export const Login = () => {
           <ClickableTextHighlight onClickHandler={() => navigate("/signup")}>회원가입</ClickableTextHighlight>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

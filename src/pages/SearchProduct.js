@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "../components/common/ProductCard";
+import { motion } from "framer-motion";
 
 export const SearchProduct = () => {
   const [searchParams] = useSearchParams();
@@ -17,8 +18,15 @@ export const SearchProduct = () => {
     photo_ip: "https://dummyimage.com/420x260",
   };
   console.log(searchQuery);
+
   return (
-    <section className="flex justify-center text-gray-600 min-w-[700px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex justify-center text-gray-600 min-w-[700px]"
+    >
       <div className="px-4 py-24 mx-7 max-w-[1200px]">
         <div className="pl-4 flex items-center ">
           <p className="text-green-800 text-lg font-bold pr-2">{searchQuery}</p>
@@ -35,6 +43,6 @@ export const SearchProduct = () => {
           <ProductCard product={product} />
         </div>
       </div>
-    </section>
+    </motion.div>
   );
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Select from "react-select";
 import { cityOptions, guOptions } from "../utils/regionList";
 import { ProductCard } from "../components/common/ProductCard";
+import { motion } from "framer-motion";
 
 export const RegionProduct = () => {
   const product = {
@@ -31,7 +32,7 @@ export const RegionProduct = () => {
   };
 
   return (
-    <div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
       <section className="flex justify-center text-gray-600 min-w-[700px]">
         <div className="px-4 py-24 mx-7 max-w-[1200px]">
           <div className="pl-4 flex items-center justify-between ">
@@ -67,6 +68,6 @@ export const RegionProduct = () => {
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };

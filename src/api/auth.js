@@ -17,8 +17,8 @@ export const loginApi = async (loginData) => {
 
     // Check if the login was successful based on the response
 
-    const accessToken = response.data["authorization"]
-    const refreshToken = response.data["refreshToken"]
+    const accessToken = response.data["authorization"];
+    const refreshToken = response.data["refreshToken"];
     console.log(accessToken);
     console.log(refreshToken);
     const decodedRefreshToken = jwtDecode(refreshToken);
