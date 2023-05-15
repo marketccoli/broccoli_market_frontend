@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode";
 import axios from "./axios";
 import Cookies from "js-cookie";
 
@@ -16,14 +17,18 @@ export const loginApi = async (loginData) => {
 
     // Check if the login was successful based on the response
 
-    const accessToken = response.data["authorization"];
-    const refreshToken = response.data["refreshToken"];
+    const accessToken = response.data["authorization"].split(" ")[1];
+    const refreshToken = response.data["refreshToken"].split(" ")[1];
+    console.log(accessToken);
+    console.log(refreshToken);
+    const decodedRefreshToken = jwtDecode(refreshToken);
+    const decodedAccessToken = jwtDecode(accessToken);
 
     Cookies.set("authorization", accessToken);
     Cookies.set("refreshToken", refreshToken);
 
-    console.log("Access Token:", accessToken);
-    console.log("Refresh Token:", refreshToken);
+    console.log("Access Token:", decodedAccessToken);
+    console.log("Refresh Token:", decodedRefreshToken);
 
     return response;
   } catch (error) {

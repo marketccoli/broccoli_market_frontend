@@ -4,18 +4,26 @@ import { GreenButton } from "../components/common/GreenButton";
 import { postTradeProduct } from "../api/product";
 import { TextInputField } from "../components/common/TextInputField";
 import { useInput } from "../hooks/useInput";
+import { useMutation, useQueryClient } from "react-query";
+import { async } from "q";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const AddProduct = () => {
   const [image, setImage] = useState("");
   const [view, setView] = useState("");
+
   const [title, handleTitleChange] = useInput("");
   const [content, handleContentChange] = useInput("");
   const [price, handlePriceChange] = useInput("");
   const [category, handleCategoryChange] = useInput("");
+
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
     // Check file type
     const fileType = file.type.split("/")[0];
     if (fileType !== "image") {
@@ -32,23 +40,35 @@ export const AddProduct = () => {
     // console.log(file);
 
     setImage(file);
+
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
       setView(reader.result);
     };
   };
+
+  const addProductMutate = useMutation(postTradeProduct, {
+    onSuccess: async () => {
+      toast.success("작성 성공!");
+      await queryClient.invalidateQueries("productList");
+      navigate("/products");
+    },
+    onError: (error) => {
+      toast.error(error.response.data.errorMessage);
+    },
+  });
   const handleSubmit = () => {
-    postTradeProduct({ title, content, price, category, photo: image });
+    addProductMutate.mutate({ title, content, price, category, photo: image });
   };
   return (
-    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
-      <h2 className="px-56 text-xl my-3">상품등록</h2>
+    <div className="flex justify-center text-gray-600 min-w-[700px]  w-full ">
+      {/* <h2 className="px-56 text-xl my-3">상품등록</h2> */}
       <div className="px-4 py-24 mx-7 max-w-[700px] w-full">
-        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 text-gray-900 rounded-lg min-w-[700px] max-w-[1200px] w-full h-full px-24">
+        <div className="grid gap-8 grid-cols-1 lg:grid-cols-2 text-gray-900 rounded-lg w-full h-full px-24">
           {/* image part */}
 
-          <div className="flex justify-center items-center bg-gray-100 rounded-lg min-h-[300px] ">
+          <div className="flex justify-center items-center bg-gray-100 rounded-lg w-full ">
             <label htmlFor="imageInput" className="flex justify-center items-center cursor-pointer w-full h-full rounded-lg" title="Upload Image">
               <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageChange} />
 

@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { GreenButton } from "../components/common/GreenButton";
 import { DropdownMenu } from "../components/DropdownMenu";
 import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
+import { useSelector } from "react-redux";
 export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchWord, setSearchWord] = useState("");
   const [dropdownState, setDropdownState] = useState(false);
+  const isAuth = useSelector((state) => state.auth.authenticated);
 
   const handleSearch = () => {
     navigate(`/search?keyword=${encodeURIComponent(searchWord)}`);
@@ -70,18 +72,23 @@ export const Header = () => {
         </div>
         <div className="flex items-center justify-center">
           {/* show on login */}
-          <div className="flex items-center">
-            <div className="min-w-[50px] my-3">
-              <GreenButton buttonText="상품등록" size="sm" clickHandler={() => handlePageChange(3)} />
+          {isAuth ? (
+            <div className="flex items-center">
+              <div className="min-w-[60px] my-3">
+                <GreenButton buttonText="상품등록" size="sm" clickHandler={() => handlePageChange(3)} />
+              </div>
+              {/* profile icon */}
+              <div onClick={() => setDropdownState(true)} className="flex w-10 h-10 ml-3 rounded-full justify-center items-center">
+                <div className="flex justify-center items-center cursor-pointer rounded-full h-10 w-10 bg-[#23551a] shadow-md">
+                  <Broccoli width="30px" height="30px" />
+                </div>
+              </div>
             </div>
-            {/* profile icon */}
-            <div onClick={() => setDropdownState(true)} className="flex w-10 h-10 rounded-full justify-center items-center">
-              <div className="cursor-pointer rounded-full h-8 w-8 bg-[#23551a]"></div>
+          ) : (
+            <div className="flex items-center min-w-[100px] my-3">
+              <GreenButton buttonText="로그인" size="sm" clickHandler={() => handlePageChange(4)} />
             </div>
-          </div>
-          <div className="flex items-center min-w-[100px] my-3">
-            <GreenButton buttonText="로그인" size="sm" clickHandler={() => handlePageChange(4)} />
-          </div>
+          )}
         </div>
       </div>
       {/* Selector */}
