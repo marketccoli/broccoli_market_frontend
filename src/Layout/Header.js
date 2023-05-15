@@ -35,7 +35,7 @@ export const Header = () => {
   }, [navigate]);
 
   return (
-    <div className="absolute bg-white text-gray-600 body-font shadow w-full min-w-[700px]">
+    <div className="absolute bg-white text-gray-600 body-font shadow w-full min-w-[700px] z-40">
       <div className=" flex p-1 flex-row items-center justify-between px-4 h-16">
         <div className="flex p-5 items-center justify-center">
           <div onClick={() => handlePageChange(0)} className="cursor-pointer flex title-font font-bold items-center text-green-900 mb-0">

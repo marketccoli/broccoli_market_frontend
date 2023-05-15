@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { DELETE_TOKEN, SET_TOKEN } from "../redux/modules/authSlice";
 import jwtDecode from "jwt-decode";
+import { AnimatePresence } from "framer-motion";
 
 export const AnimatedRoutes = () => {
   const token = Cookies.get("refreshToken");
@@ -37,17 +38,19 @@ export const AnimatedRoutes = () => {
   }, [navigate]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/mypage" element={<Mypage />} />
-      <Route path="/chats" element={<ChatPage />} />
-      <Route path="/product/:id" element={<ProductDetails />} />
-      <Route path="/addproduct" element={<AddProduct />} />
-      <Route path="/region" element={<RegionProduct />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/search" element={<SearchProduct />} />
-    </Routes>
+    <AnimatePresence mode="wait">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/chats" element={<ChatPage />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/addproduct" element={<AddProduct />} />
+        <Route path="/region" element={<RegionProduct />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/search" element={<SearchProduct />} />
+      </Routes>
+    </AnimatePresence>
   );
 };

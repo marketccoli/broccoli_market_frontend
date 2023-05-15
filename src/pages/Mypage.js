@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { Sell } from "../components/Mypage/Sell";
+import { motion } from "framer-motion";
+import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
+import { MyInfo } from "../components/Mypage/MyInfo";
+import { Liked } from "../components/Mypage/Liked";
+import { Bought } from "../components/Mypage/Bought";
 
 export const Mypage = () => {
   // myinfo, selling, liked, bought
@@ -10,40 +15,49 @@ export const Mypage = () => {
   };
 
   return (
-    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
-      <div className="px-4 py-24 mx-7 max-w-[700px] w-full">
-        <div className="w-full">
-          <button
-            className={`px-4 py-2 mr-2 ${activeTab === "myInfo" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-            onClick={() => handleTabChange("myInfo")}
-          >
-            My Info
-          </button>
-          <button
-            className={`px-4 py-2 mr-2 ${activeTab === "selling" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-            onClick={() => handleTabChange("selling")}
-          >
-            Selling
-          </button>
-          <button
-            className={`px-4 py-2 mr-2 ${activeTab === "liked" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-            onClick={() => handleTabChange("liked")}
-          >
-            Liked
-          </button>
-          <button
-            className={`px-4 py-2 mr-2 ${activeTab === "bought" ? "bg-blue-500 text-white" : "bg-gray-300"}`}
-            onClick={() => handleTabChange("bought")}
-          >
-            Bought
-          </button>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="absolute h-full w-full flex justify-center min-w-[700px]"
+    >
+      <div className="px-4 py-24 mx-7 min-w-[700px] w-full h-full">
+        <div className="absolute pt-12">
+          <h2 className=" font-bold text-xl mb-4">Mypage</h2>
+          <div className="border-b border-gradient w-full my-4"></div>
+          <ul className="flex flex-col space-y-2 w-[120px]">
+            <li>
+              <ClickableTextHighlight selectionHighlight={activeTab === "myInfo"} onClickHandler={() => handleTabChange("myInfo")}>
+                내 정보
+              </ClickableTextHighlight>
+            </li>
+            <li>
+              <ClickableTextHighlight selectionHighlight={activeTab === "selling"} onClickHandler={() => handleTabChange("selling")}>
+                판매중
+              </ClickableTextHighlight>
+            </li>
+            <li>
+              <ClickableTextHighlight selectionHighlight={activeTab === "liked"} onClickHandler={() => handleTabChange("liked")}>
+                관심 목록
+              </ClickableTextHighlight>
+            </li>
+            <li>
+              <ClickableTextHighlight selectionHighlight={activeTab === "bought"} onClickHandler={() => handleTabChange("bought")}>
+                구매 내역
+              </ClickableTextHighlight>
+            </li>
+          </ul>
         </div>
-
-        {activeTab === "myInfo" && <div>My Info Tab Content</div>}
-        {activeTab === "selling" && <Sell />}
-        {activeTab === "liked" && <div>Liked Tab Content</div>}
-        {activeTab === "bought" && <div>Bought Tab Content</div>}
+        <div className="flex h-full justify-center items-center">
+          <div className="w-3/4 p-12 h-full">
+            {activeTab === "myInfo" && <MyInfo />}
+            {activeTab === "selling" && <Sell />}
+            {activeTab === "liked" && <Liked />}
+            {activeTab === "bought" && <Bought />}
+          </div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

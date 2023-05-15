@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { ProductCard } from "../components/common/ProductCard";
 import { useQuery } from "react-query";
 import { getTradeProduct } from "../api/product";
+import { motion } from "framer-motion";
 
 export const ProductsPage = () => {
   // const product = {
@@ -25,8 +26,15 @@ export const ProductsPage = () => {
       console.log(data);
     }
   }, [data]);
+
   return (
-    <section className="flex justify-center text-gray-600 min-w-[700px] w-full ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex justify-center text-gray-600 min-w-[700px] w-full "
+    >
       <div className="px-4 py-24 mx-7 max-w-[1200px] ">
         {/* <div className="flex w-full justify-center"> */}
         <span className="ml-3 text-2xl">중고 거래</span>
@@ -37,6 +45,6 @@ export const ProductsPage = () => {
           ))}
         </div>
       </div>
-    </section>
+    </motion.div>
   );
 };

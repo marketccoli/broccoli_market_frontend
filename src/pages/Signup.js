@@ -11,6 +11,7 @@ import Select from "react-select";
 import { emailVerificationApi, signupApi } from "../api/auth";
 import { useMutation } from "react-query";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
+import { motion } from "framer-motion";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -96,7 +97,13 @@ export const Signup = () => {
   };
 
   return (
-    <div className="flex  items-center h-screen justify-between">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex  items-center h-screen justify-between"
+    >
       {signupMutation.isLoading && <LoadingSpinner />}
       <div className="flex justify-center items-center w-full h-full bg-green-100">
         <Broccoli height="400px" width="400px" />
@@ -188,6 +195,6 @@ export const Signup = () => {
           <ClickableTextHighlight onClickHandler={() => navigate("/login")}>로그인</ClickableTextHighlight>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

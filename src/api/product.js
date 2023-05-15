@@ -67,7 +67,8 @@ export const deleteOneTradeProduct = async (productId) => {
 
 export const toggleLikeTradeProduct = async (productId) => {
   try {
-    const response = await axios.put(`/product/${productId}`);
+    console.log("activate?");
+    const response = await axios.put(`/product/${productId}/likes`);
     console.log(response);
     return response;
   } catch (error) {

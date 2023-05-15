@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useParams } from "react-router";
-import { deleteOneTradeProduct, getOneTradeProduct } from "../api/product";
+import { deleteOneTradeProduct, getOneTradeProduct, toggleLikeTradeProduct } from "../api/product";
 import { dateConvert } from "../utils/dateConvert";
 import { AiFillHeart } from "react-icons/ai";
 import { GrView } from "react-icons/gr";
 import { GreenButton } from "../components/common/GreenButton";
+import { motion } from "framer-motion";
+import { debounce } from "lodash";
 // {
 //   "product” : {
 //     “title” : “타이틀1”,
@@ -25,16 +27,33 @@ import { GreenButton } from "../components/common/GreenButton";
 export const ProductDetails = () => {
   const [product, setProduct] = useState();
   const [imageError, setImageError] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  const queryClient = useQueryClient();
+  const params = useParams();
+  const { data } = useQuery(`product${params.id}`, () => getOneTradeProduct(params.id), {
+    refetchOnWindowFocus: false,
+    // staleTime: 600 * 1000,
+  });
+
+  const likeMutation = useMutation(toggleLikeTradeProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(`product${params.id}`);
+    },
+  });
+
+  const onLikeClick = debounce(
+    async () => {
+      setLiked(!liked);
+      likeMutation.mutate(params.id);
+    },
+    100,
+    { leading: false }
+  );
 
   const handleImageError = () => {
     setImageError(true);
   };
-
-  const param = useParams();
-  const { data } = useQuery(`product${param.id}`, () => getOneTradeProduct(param.id), {
-    refetchOnWindowFocus: false,
-    // staleTime: 600 * 1000,
-  });
 
   useEffect(() => {
     if (data) {
@@ -44,30 +63,46 @@ export const ProductDetails = () => {
   }, [data]);
 
   return (
-    <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="flex justify-center text-gray-600 min-w-[700px] w-full "
+    >
       <div className="px-4 py-24 mx-7 max-w-[1200px] ">
         <GreenButton buttonText="Delete" clickHandler={() => deleteOneTradeProduct(1)} />
+        <AiFillHeart
+          className="text-2xl mr-2"
+          color={liked ? "red" : "white"}
+          onClick={onLikeClick}
+          style={{
+            filter: "drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))",
+          }}
+        />
         {product && (
           <>
-            <div className="min-h-[400px] min-w-[400px] h-[500px]">
+            <div className="min-h-[400px] min-w-[400px] h-[500px] ">
               {!imageError ? (
                 <img alt="product" className="object-cover h-full rounded-lg" src={product.photo_ip} onError={handleImageError} />
               ) : (
                 <img alt="Placeholder" className="object-cover w-full h-full rounded-md" src="https://via.placeholder.com/420x260?text=Image" />
               )}
             </div>
-            <div className="border-b border-gradient w-full mb-4"></div>
+
             <div className="mt-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">판매 정보</h3>
-                <span className="font-medium">등록일: {dateConvert(product.createdAt)}</span>
+                <span className="text-sm">등록일: {dateConvert(product.createdAt)}</span>
               </div>
               <ul className="mt-2 text-gray-700 text-sm pl-1">
                 <li>
-                  <span className="font-medium">지역:</span> {product.address}
+                  <span className="font-medium">지역:</span>
+                  <span className="font-bold"> {product.address}</span>
                 </li>
                 <li>
-                  <span className="font-medium">판매 여부:</span> {product.is_sold ? "판매 완료" : "판매 중"}
+                  <span className="font-medium">판매 여부:</span>
+                  <span className="font-bold"> {product.is_sold ? "판매 완료" : "판매 중"}</span>
                 </li>
               </ul>
             </div>
@@ -86,9 +121,10 @@ export const ProductDetails = () => {
                 <span className="text-sm">{product.views}</span>
               </div>
             </div>
+            <div className="border-b border-gradient w-full my-4"></div>
           </>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
