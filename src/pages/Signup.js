@@ -29,7 +29,7 @@ export const Signup = () => {
   const signupMutation = useMutation(signupApi, {
     onSuccess: () => {
       toast.success("Signup successful");
-      navigate("/");
+      navigate("/login");
     },
     onError: (error) => {
       toast.error(error.response.data.errorMessage);

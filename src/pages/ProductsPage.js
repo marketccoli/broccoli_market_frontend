@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { ProductCard } from "../components/common/ProductCard";
-import { getTradeProduct } from "../api/api";
+import { getTradeProduct } from "../api/product";
 import { useQuery } from "react-query";
 
 export const ProductsPage = () => {

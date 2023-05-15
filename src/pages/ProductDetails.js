@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import { deleteOneTradeProduct, getOneTradeProduct } from "../api/api";
+import { deleteOneTradeProduct, getOneTradeProduct } from "../api/product";
 import { dateConvert } from "../utils/dateConvert";
 import { AiFillHeart } from "react-icons/ai";
 import { GrView } from "react-icons/gr";
