@@ -1,23 +1,18 @@
 import { useSearchParams } from "react-router-dom";
 import { ProductCard } from "../components/common/ProductCard";
 import { motion } from "framer-motion";
+import { searchProduct } from "../api/product";
+import { useQuery } from "react-query";
+import { useEffect } from "react";
 
 export const SearchProduct = () => {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("keyword");
-  const product = {
-    product_id: 1,
-    title: "타이틀1",
-    address: "서울시 용산구",
-    price: "15000",
-    category: "전자제품",
-    likes: 10,
-    views: 50,
-    createdAt: "2022-07-25T07:45:56.000Z",
-    is_sold: false,
-    photo_ip: "https://dummyimage.com/420x260",
-  };
-  console.log(searchQuery);
+
+  const { data: productData } = useQuery(`searchedList`, () => searchProduct(searchQuery), {
+    refetchOnWindowFocus: false,
+    // staleTime: 600 * 1000,
+  });
 
   return (
     <motion.div
@@ -32,16 +27,7 @@ export const SearchProduct = () => {
           <p className="text-green-800 text-lg font-bold pr-2">{searchQuery}</p>
           <span className="text-2xl">에 대한검색 결과</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2">
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-          <ProductCard product={product} />
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2"></div>
       </div>
     </motion.div>
   );

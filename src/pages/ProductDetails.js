@@ -8,6 +8,7 @@ import { GrView } from "react-icons/gr";
 import { GreenButton } from "../components/common/GreenButton";
 import { motion } from "framer-motion";
 import { debounce } from "lodash";
+import { ProductCard } from "../components/common/ProductCard";
 // {
 //   "product” : {
 //     “title” : “타이틀1”,
@@ -38,18 +39,15 @@ export const ProductDetails = () => {
 
   const likeMutation = useMutation(toggleLikeTradeProduct, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`product${params.id}`);
+      queryClient.invalidateQueries([`product${params.id}`]);
+      queryClient.invalidateQueries("productList");
     },
   });
 
-  const onLikeClick = debounce(
-    async () => {
-      setLiked(!liked);
-      likeMutation.mutate(params.id);
-    },
-    100,
-    { leading: false }
-  );
+  const onLikeClick = () => {
+    setLiked(!liked);
+    likeMutation.mutate(params.id);
+  };
 
   const handleImageError = () => {
     setImageError(true);
@@ -70,21 +68,22 @@ export const ProductDetails = () => {
       transition={{ duration: 0.3 }}
       className="flex justify-center text-gray-600 min-w-[700px] w-full "
     >
-      <div className="px-4 py-24 mx-7 max-w-[1200px] ">
+      <div className="px-4 py-24 mx-7 max-w-[900px] ">
         <GreenButton buttonText="Delete" clickHandler={() => deleteOneTradeProduct(1)} />
-        <AiFillHeart
-          className="text-2xl mr-2"
-          color={liked ? "red" : "white"}
-          onClick={onLikeClick}
-          style={{
-            filter: "drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))",
-          }}
-        />
+
         {product && (
           <>
-            <div className="min-h-[400px] min-w-[400px] h-[500px] ">
+            <div className="min-h-[400px] min-w-[400px] h-[500px] relative">
+              <AiFillHeart
+                className="absolute top-2 left-2 text-2xl mr-2"
+                color={liked ? "red" : "white"}
+                onClick={onLikeClick}
+                style={{
+                  filter: "drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.1))",
+                }}
+              />
               {!imageError ? (
-                <img alt="product" className="object-cover h-full rounded-lg" src={product.photo_ip} onError={handleImageError} />
+                <img alt="product" className="object-cover h-full w-3/4 rounded-lg" src={product.photo_ip} onError={handleImageError} />
               ) : (
                 <img alt="Placeholder" className="object-cover w-full h-full rounded-md" src="https://via.placeholder.com/420x260?text=Image" />
               )}
@@ -122,6 +121,15 @@ export const ProductDetails = () => {
               </div>
             </div>
             <div className="border-b border-gradient w-full my-4"></div>
+            <div className="flex flex-col items-center justify-center w-full relative">
+              <div className=" w-full">
+                <h2 className="pl-1 text-xl font-bold">관련 상품</h2>
+              </div>
+              {data?.relatedProduct.length ? "" : <span className="mt-3">관련상품이 없습니다.</span>}
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 p-2 w-full max-h-full">
+                {data?.relatedProduct.length ? data.relatedProduct.map((product) => <ProductCard key={product.product_id} product={product} />) : ""}
+              </div>
+            </div>
           </>
         )}
       </div>

@@ -11,16 +11,17 @@ export const getMySellProducts = async () => {
 };
 export const getMyLikedProducts = async () => {
   try {
-    const response = await axios.get(`/mypage/likes`);
+    const response = await axios.get(`/mypage/likes`, { withCredentials: true });
     console.log(response);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
+
 export const getMyBoughtProducts = async () => {
   try {
-    const response = await axios.get(`/mypage/buy`);
+    const response = await axios.get(`/mypage/bought`);
     console.log(response);
     return response;
   } catch (error) {
