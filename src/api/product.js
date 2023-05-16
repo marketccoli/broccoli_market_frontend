@@ -78,7 +78,11 @@ export const toggleLikeTradeProduct = async (productId) => {
 
 export const searchProduct = async (keyword) => {
   try {
-    const response = await axios.get(`/product/search?keyword=${keyword}`);
+    const response = await axios.get(`/product/search?keyword=${keyword}`, {
+      query: {
+        keyword: keyword,
+      },
+    });
     console.log(response);
     return response;
   } catch (error) {

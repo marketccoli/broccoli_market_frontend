@@ -20,9 +20,9 @@ export const Mypage = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="absolute h-full w-full flex justify-center min-w-[700px]"
+      className="w-full flex justify-center min-w-[700px]"
     >
-      <div className="px-4 py-24 mx-7 min-w-[700px] w-full h-full">
+      <div className="px-4 py-24 mx-7 min-w-[700px] w-full">
         <div className="absolute pt-12">
           <h2 className=" font-bold text-xl mb-4">Mypage</h2>
           <div className="border-b border-gradient w-full my-4"></div>
@@ -49,8 +49,8 @@ export const Mypage = () => {
             </li>
           </ul>
         </div>
-        <div className="flex h-full justify-center items-center">
-          <div className="w-3/4 p-12 h-full">
+        <div className="flex  justify-center items-center">
+          <div className="w-3/4 p-12 ">
             {activeTab === "myInfo" && <MyInfo />}
             {activeTab === "selling" && <Sell />}
             {activeTab === "liked" && <Liked />}

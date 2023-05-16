@@ -24,7 +24,8 @@ export const Signup = () => {
     if (!email) return toast.error("이메일을 입력해주세요");
     if (!city) return toast.error("시를 입력해주세요");
     if (!gu) return toast.error("구를 입력해주세요");
-    signupMutation.mutate({ id: username, password, nickname, email, address: `${city} ${gu}`, authCode: verificationNumber });
+
+    signupMutation.mutate({ id: username, password, nickname, email, address: `${city.value} ${gu.value}`, authCode: verificationNumber });
   };
 
   const signupMutation = useMutation(signupApi, {
@@ -83,7 +84,7 @@ export const Signup = () => {
   const handleGuChange = (selectedOption) => {
     setGu(selectedOption);
   };
-
+  console.log(city, gu);
   const customStyles = {
     control: (provided, state) => ({
       ...provided,

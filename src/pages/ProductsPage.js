@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductCard } from "../components/common/ProductCard";
 import { useQuery } from "react-query";
 import { getTradeProduct } from "../api/product";
@@ -17,16 +17,18 @@ export const ProductsPage = () => {
   //   is_sold: false,
   //   photo_ip: "https://dummyimage.com/420x260",
   // };
-  const { data } = useQuery(`productList`, getTradeProduct, {
+  const { data, isLoading } = useQuery(`productList`, getTradeProduct, {
     refetchOnWindowFocus: false,
     // staleTime: 600 * 1000,
   });
+  const [products, setProducts] = useState();
   useEffect(() => {
     if (data) {
       console.log(data);
+      setProducts(data);
     }
   }, [data]);
-
+  if (isLoading) return;
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -40,9 +42,7 @@ export const ProductsPage = () => {
         <span className="ml-3 text-2xl">중고 거래</span>
         {/* </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 ">
-          {data?.map((product) => (
-            <ProductCard key={product.product_id} product={product} />
-          ))}
+          {products && products.map((product) => <ProductCard key={product.product_id} product={product} />)}
         </div>
       </div>
     </motion.div>
