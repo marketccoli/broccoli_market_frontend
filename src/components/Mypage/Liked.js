@@ -20,7 +20,7 @@ export const Liked = () => {
         <div className="border-b border-gradient w-full my-2"></div>
       </div>
       {data?.data.likePtoduct.length ? "" : "아이템이 없습니다."}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 max-h-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 max-h-full  w-full max-w-[1000px]">
         {data?.data.likePtoduct.length ? data.data.likePtoduct.map((product) => <ProductCard key={product.product_id} product={product} />) : ""}
       </div>
     </div>

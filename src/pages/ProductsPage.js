@@ -30,7 +30,7 @@ export const ProductsPage = () => {
         <span className="ml-3 text-2xl">중고 거래</span>
         {/* </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 ">
-          {products && products.map((product) => <ProductCard key={product.product_id} product={product} />)}
+          {products && products.filter((product) => !product.is_sold).map((product) => <ProductCard key={product.product_id} product={product} />)}
         </div>
       </div>
     </motion.div>

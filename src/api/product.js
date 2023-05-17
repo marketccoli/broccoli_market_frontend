@@ -65,6 +65,20 @@ export const deleteOneTradeProduct = async (productId) => {
   }
 };
 
+export const tradCompleteProduct = async (productId) => {
+  try {
+    const response = await axios.patch(`/product/${productId}/sold`, {
+      params: {
+        product_id: parseInt(productId),
+      },
+    });
+    // console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const toggleLikeTradeProduct = async (productId) => {
   try {
     // console.log("activate?");

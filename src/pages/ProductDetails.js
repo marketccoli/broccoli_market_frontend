@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router";
-import { deleteOneTradeProduct, getOneTradeProduct, toggleLikeTradeProduct } from "../api/product";
+import { deleteOneTradeProduct, getOneTradeProduct, toggleLikeTradeProduct, tradCompleteProduct } from "../api/product";
 import { dateConvert } from "../utils/dateConvert";
 import { AiFillHeart } from "react-icons/ai";
 import { GrView } from "react-icons/gr";
@@ -21,6 +21,7 @@ export const ProductDetails = () => {
   const [liked, setLiked] = useState(false);
   const [ModalComponent, openModal, closeModal] = useModal();
   const isAuth = useSelector((state) => state.auth.authenticated);
+  const user_id = useSelector((state) => state.auth.user_id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();
@@ -40,10 +41,21 @@ export const ProductDetails = () => {
   });
 
   const deleteMutation = useMutation(deleteOneTradeProduct, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries("productList");
+    onSuccess: () => {
+      queryClient.invalidateQueries("productList");
       toast.success("삭제 성공");
-      navigate("/");
+      navigate("/products");
+    },
+    onError: (error) => {
+      toast.error(error.response.data.errorMessage);
+    },
+  });
+  const tradeCompleteMutation = useMutation(tradCompleteProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("productList");
+      queryClient.invalidateQueries([`product${params.id}`]);
+      toast.success("판매 완료!");
+      navigate("/products");
     },
     onError: (error) => {
       toast.error(error.response.data.errorMessage);
@@ -57,6 +69,9 @@ export const ProductDetails = () => {
 
   const onDeleteClick = () => {
     deleteMutation.mutate(params.id);
+  };
+  const onCompleteClick = () => {
+    tradeCompleteMutation.mutate(params.id);
   };
 
   const handleImageError = () => {
@@ -81,8 +96,14 @@ export const ProductDetails = () => {
         className="flex justify-center text-gray-600 min-w-[700px] w-full "
       >
         <div className="px-4 py-24 mx-7 max-w-[800px] ">
-          {/* <GreenButton buttonText="Delete" clickHandler={onDeleteClick} /> */}
+          <div className="flex flex-col gap-1 my-1">
+            {product && product.id === user_id && <GreenButton buttonText="삭제" clickHandler={onDeleteClick} />}
+            {product && product.id === user_id && <GreenButton buttonText="판매 완료" clickHandler={onCompleteClick} />}
+          </div>
           {likeMutation.isLoading && <LoadingSpinner />}
+          {deleteMutation.isLoading && <LoadingSpinner />}
+          {tradeCompleteMutation.isLoading && <LoadingSpinner />}
+
           {product && (
             <>
               <div className="min-h-[400px] min-w-[400px] h-[500px] relative">

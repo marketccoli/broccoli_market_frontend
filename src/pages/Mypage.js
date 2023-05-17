@@ -44,7 +44,7 @@ export const Mypage = () => {
             </li>
             <li>
               <ClickableTextHighlight selectionHighlight={activeTab === "bought"} onClickHandler={() => handleTabChange("bought")}>
-                구매 내역
+                판매 내역
               </ClickableTextHighlight>
             </li>
           </ul>
