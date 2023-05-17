@@ -32,10 +32,10 @@ export const SearchProduct = () => {
     >
       <div className="px-4 py-24 mx-7 max-w-[1200px]">
         <div className="pl-4 flex items-center ">
-          <p className="text-green-800 text-lg font-bold pr-2">{searchQuery}</p>
+          <p className="text-green-800 text-xl font-bold pr-1">{searchQuery}</p>
           <span className="text-2xl">에 대한검색 결과</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 max-h-full  w-full max-w-[1000px]">
           {products && products.map((product) => <ProductCard key={product.product_id} product={product} />)}
         </div>
       </div>

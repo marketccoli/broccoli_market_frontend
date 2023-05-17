@@ -25,7 +25,7 @@ export const ProductDetails = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();
-  const { data } = useQuery(`product${params.id}`, () => getOneTradeProduct(params.id), {
+  const { data, isLoading } = useQuery(`product${params.id}`, () => getOneTradeProduct(params.id), {
     refetchOnWindowFocus: false,
     // staleTime: 600 * 1000,
   });
@@ -87,14 +87,10 @@ export const ProductDetails = () => {
 
   return (
     <>
+      {isLoading && <LoadingSpinner />}
+
       {product && <ModalComponent image={product.photo_ip} />}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="flex justify-center text-gray-600 min-w-[700px] w-full "
-      >
+      <div className="flex justify-center text-gray-600 min-w-[700px] w-full ">
         <div className="px-4 py-24 mx-7 max-w-[800px] ">
           <div className="flex flex-col gap-1 my-1">
             {product && product.id === user_id && <GreenButton buttonText="삭제" clickHandler={onDeleteClick} />}
@@ -182,7 +178,7 @@ export const ProductDetails = () => {
             </>
           )}
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

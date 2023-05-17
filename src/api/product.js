@@ -14,10 +14,10 @@ export const postTradeProduct = async (data) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log("Image upload successful");
+    // console.log("Image upload successful");
   } catch (error) {
-    console.error("Image upload failed");
     console.error(error);
+    throw error;
   }
 };
 export const getTradeProduct = async (data) => {
