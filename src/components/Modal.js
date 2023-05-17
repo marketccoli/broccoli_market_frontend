@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BsCardImage } from "react-icons/bs";
+import { MdOutlinePhotoLibrary } from "react-icons/md";
 import { GreenButton } from "../components/common/GreenButton";
 import { postTradeProduct } from "../api/product";
 import { TextInputField } from "../components/common/TextInputField";
@@ -9,8 +9,9 @@ import { async } from "q";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import { LoadingSpinner } from "../utils/LoadingSpinner";
 
-export const AddProduct = () => {
+export const Modal = ({ isOpen, onClose }) => {
   const [image, setImage] = useState("");
   const [view, setView] = useState("");
 
@@ -51,9 +52,9 @@ export const AddProduct = () => {
 
   const addProductMutate = useMutation(postTradeProduct, {
     onSuccess: async () => {
-      toast.success("작성 성공!");
       await queryClient.invalidateQueries("productList");
-      navigate("/products");
+      toast.success("작성 성공!");
+      onClose();
     },
     onError: (error) => {
       toast.error(error.response.data.errorMessage);
@@ -67,27 +68,29 @@ export const AddProduct = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-      className="flex flex-col justify-center items-center text-gray-600 min-w-[700px] "
+      transition={{ duration: 0.2 }}
+      className={`fixed inset-0 z-50 flex flex-col justify-center items-center ${isOpen ? "" : "hidden"}`}
     >
-      <h2 className="px-56 text-xl my-3">상품등록</h2>
-      <div className="px-4 py-24 mx-7 ">
+      {addProductMutate.isLoading && <LoadingSpinner />}
+      <div className="fixed inset-0 bg-black opacity-75" onClick={() => onClose()}></div>
+      <div className="fixed p-4 pb-7 flex flex-col justify-center items-center text-gray-600 max-w-[700px] rounded-lg bg-white shadow">
+        <h2 className="px-56 text-xl my-3">상품등록</h2>
         <div className="flex flex-col">
           {/* image part */}
 
-          <div className="flex justify-center items-center rounded-lg w-[500px] h-[300px] mx-10">
+          <div className="flex justify-center items-center rounded-lg w-[500px] h-[300px]">
             <label
               htmlFor="imageInput"
-              className="flex justify-center items-center cursor-pointer w-full h-full rounded-lg mx-10 min-h-[300px] bg-[#f1ffe9] hover:bg-[#e5f2dd] transition-colors duration-200 ease"
+              className="flex items-center justify-center rounded-lg object-cover shadow w-full h-full mx-10 bg-[#f1ffe9] hover:bg-[#e5f2dd] transition-colors duration-200 ease"
               title="Upload Image"
             >
               {view ? "" : "이미지 업로드"}
               <input type="file" id="imageInput" accept="image/*" className="hidden" onChange={handleImageChange} />
               {view ? (
-                <img className="rounded-lg object-cover shadow-md w-full h-full mx-10" src={view} alt="" />
+                <img className="rounded-lg object-cover shadow w-full h-full " src={view} alt="" />
               ) : (
                 <div className="flex justify-center items-center rounded-lg ml-3">
-                  <BsCardImage />
+                  <MdOutlinePhotoLibrary />
                 </div>
               )}
             </label>

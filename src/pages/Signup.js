@@ -12,6 +12,7 @@ import { emailVerificationApi, signupApi } from "../api/auth";
 import { useMutation } from "react-query";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
 import { motion } from "framer-motion";
+import validator from "validator";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -48,6 +49,9 @@ export const Signup = () => {
   const [remainingTime, setRemainingTime] = useState(300); // 5 minutes in seconds
 
   const sendEmailVerification = async () => {
+    if (!validator.isEmail(email)) {
+      return toast.error("올바른 이메일을 입력해주세요");
+    }
     await emailVerificationApi(email);
     setShowVerificationInput(true);
     startTimer();
@@ -84,7 +88,7 @@ export const Signup = () => {
   const handleGuChange = (selectedOption) => {
     setGu(selectedOption);
   };
-  console.log(city, gu);
+  // console.log(city, gu);
   const customStyles = {
     control: (provided, state) => ({
       ...provided,

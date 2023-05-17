@@ -3,16 +3,24 @@ import { ProductCard } from "../components/common/ProductCard";
 import { motion } from "framer-motion";
 import { searchProduct } from "../api/product";
 import { useQuery } from "react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const SearchProduct = () => {
+  const [products, setProducts] = useState();
+
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("keyword");
 
-  const { data: productData } = useQuery(`searchedList`, () => searchProduct(searchQuery), {
+  const { data } = useQuery(["searchedList", searchQuery], () => searchProduct(searchQuery), {
     refetchOnWindowFocus: false,
     // staleTime: 600 * 1000,
   });
+
+  useEffect(() => {
+    if (data) {
+      setProducts(data.data.result);
+    }
+  }, [data, setProducts]);
 
   return (
     <motion.div
@@ -27,7 +35,9 @@ export const SearchProduct = () => {
           <p className="text-green-800 text-lg font-bold pr-2">{searchQuery}</p>
           <span className="text-2xl">에 대한검색 결과</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 ">
+          {products && products.map((product) => <ProductCard key={product.product_id} product={product} />)}
+        </div>
       </div>
     </motion.div>
   );

@@ -5,18 +5,6 @@ import { getTradeProduct } from "../api/product";
 import { motion } from "framer-motion";
 
 export const ProductsPage = () => {
-  // const product = {
-  //   product_id: 1,
-  //   title: "타이틀1",
-  //   address: "서울시 용산구",
-  //   price: "15000",
-  //   category: "전자제품",
-  //   likes: 10,
-  //   views: 50,
-  //   createdAt: "2022-07-25T07:45:56.000Z",
-  //   is_sold: false,
-  //   photo_ip: "https://dummyimage.com/420x260",
-  // };
   const { data, isLoading } = useQuery(`productList`, getTradeProduct, {
     refetchOnWindowFocus: false,
     // staleTime: 600 * 1000,
