@@ -10,7 +10,7 @@ export const Sell = () => {
   });
   useEffect(() => {
     if (data) {
-      console.log(data);
+      // console.log(data);
     }
   });
   return (

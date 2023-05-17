@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 export const signupApi = async (signupData) => {
   try {
     const response = await axios.post(`/auth/signup`, signupData);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     throw error;
@@ -19,16 +19,16 @@ export const loginApi = async (loginData) => {
 
     const accessToken = response.data["authorization"];
     const refreshToken = response.data["refreshToken"];
-    console.log(accessToken);
-    console.log(refreshToken);
+    // console.log(accessToken);
+    // console.log(refreshToken);
     const decodedRefreshToken = jwtDecode(refreshToken);
     const decodedAccessToken = jwtDecode(accessToken);
 
     Cookies.set("authorization", accessToken);
     Cookies.set("refreshToken", refreshToken);
 
-    console.log("Access Token:", decodedAccessToken);
-    console.log("Refresh Token:", decodedRefreshToken);
+    // console.log("Access Token:", decodedAccessToken);
+    // console.log("Refresh Token:", decodedRefreshToken);
 
     return response;
   } catch (error) {
@@ -38,7 +38,7 @@ export const loginApi = async (loginData) => {
 export const socialLoginApi = async (key) => {
   try {
     const response = await axios.post(`/auth/sociallogin`, key);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -47,7 +47,7 @@ export const socialLoginApi = async (key) => {
 export const withdrawalApi = async () => {
   try {
     const response = await axios.delete(`/auth/withdrawal`);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -60,7 +60,7 @@ export const logoutApi = async (user_id) => {
         user_id: parseInt(user_id),
       },
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -69,7 +69,7 @@ export const logoutApi = async (user_id) => {
 export const emailVerificationApi = async (email) => {
   try {
     const response = await axios.post(`/auth/authEmail`, { email });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -78,7 +78,7 @@ export const emailVerificationApi = async (email) => {
 export const emailVerificationNumApi = async (email) => {
   try {
     const response = await axios.post(`/auth/authEmail`, { email });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);

@@ -10,7 +10,7 @@ export const Liked = () => {
   });
   useEffect(() => {
     if (data) {
-      console.log(data.data.likePtoduct);
+      // console.log(data.data.likePtoduct);
     }
   });
   return (

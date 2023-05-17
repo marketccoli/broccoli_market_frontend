@@ -6,7 +6,6 @@ import { Login } from "../pages/Login";
 import { Mypage } from "../pages/Mypage";
 import { ChatPage } from "../pages/ChatPage";
 import { ProductDetails } from "../pages/ProductDetails";
-import { AddProduct } from "../pages/AddProduct";
 import { RegionProduct } from "../pages/RegionProduct";
 import { ProductsPage } from "../pages/ProductsPage";
 import { SearchProduct } from "../pages/SearchProduct";
@@ -25,10 +24,8 @@ export const AnimatedRoutes = () => {
 
   useEffect(() => {
     if (token) {
-      const { user_id } = jwtDecode(token);
-      // console.log(user_id);
-      // console.log(isAuth);
-      dispatch(SET_TOKEN(user_id));
+      const { nickname } = jwtDecode(token);
+      dispatch(SET_TOKEN(nickname));
     }
     if (isAuth && !token) {
       dispatch(DELETE_TOKEN());
@@ -46,7 +43,6 @@ export const AnimatedRoutes = () => {
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/chats" element={<ChatPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/region" element={<RegionProduct />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/search" element={<SearchProduct />} />

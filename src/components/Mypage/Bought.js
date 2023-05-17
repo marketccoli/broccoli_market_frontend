@@ -11,7 +11,7 @@ export const Bought = () => {
   });
   useEffect(() => {
     if (data) {
-      console.log(data.data.buyProduct);
+      // console.log(data.data.buyProduct);
       setBought(data.data.buyProduct);
     }
   });

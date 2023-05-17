@@ -44,7 +44,7 @@ export const getOneTradeProduct = async (productId) => {
 export const editOneTradeProduct = async (productId, data) => {
   try {
     const response = await axios.patch(`/product/${productId}`, data);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -58,7 +58,7 @@ export const deleteOneTradeProduct = async (productId) => {
         product_id: parseInt(productId),
       },
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -67,9 +67,9 @@ export const deleteOneTradeProduct = async (productId) => {
 
 export const toggleLikeTradeProduct = async (productId) => {
   try {
-    console.log("activate?");
+    // console.log("activate?");
     const response = await axios.put(`/product/${productId}/likes`);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -83,7 +83,7 @@ export const searchProduct = async (keyword) => {
         keyword: keyword,
       },
     });
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -92,7 +92,7 @@ export const searchProduct = async (keyword) => {
 export const getProductListByCategory = async (category) => {
   try {
     const response = await axios.get(`/products?category=${category}`);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
