@@ -121,6 +121,8 @@ export const ProductDetails = () => {
 
   useEffect(() => {
     if (data) {
+      setLiked(data.existLike);
+      console.log(data);
       setProduct(data);
     }
   }, [data]);
@@ -250,9 +252,11 @@ export const ProductDetails = () => {
                     <GrView className="ml-4 mr-1 text-sm text-gray-500" />
                     <span className="text-sm">{product.views}</span>
                   </div>
-                  <div>
-                    <GreenButton buttonText="채팅하기" clickHandler={productChatHandler} />
-                  </div>
+                  {user_id !== product.id && (
+                    <div>
+                      <GreenButton buttonText="채팅하기" clickHandler={productChatHandler} />
+                    </div>
+                  )}
                 </div>
               </div>
 

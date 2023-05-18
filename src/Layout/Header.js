@@ -72,7 +72,7 @@ export const Header = () => {
 
   useEffect(() => {
     if (isAuth) {
-      initializeWebSocket();
+      // initializeWebSocket();
     } else {
       if (socket) {
         socket.disconnect();
