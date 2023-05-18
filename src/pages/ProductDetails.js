@@ -122,7 +122,7 @@ export const ProductDetails = () => {
   useEffect(() => {
     if (data) {
       setLiked(data.existLike);
-      console.log(data);
+      // console.log(data);
       setProduct(data);
     }
   }, [data]);

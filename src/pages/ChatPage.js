@@ -43,7 +43,7 @@ export const ChatPage = () => {
   };
 
   const handleSubmit = () => {
-    console.log(editorContent);
+    // console.log(editorContent);
   };
 
   useEffect(() => {

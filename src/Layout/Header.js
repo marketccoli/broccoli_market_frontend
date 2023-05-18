@@ -52,7 +52,7 @@ export const Header = () => {
     socket.on("connect", () => {
       // Retrieve the socket.id
       const socketId = socket.id;
-      console.log("Socket ID:", socketId);
+      // console.log("Socket ID:", socketId);
       dispatch(SET_SOCKET_ID(socketId));
 
       // Emit the "addUser" event with the socketId and other user information
@@ -60,12 +60,12 @@ export const Header = () => {
 
       // Handle the "getUsers" event to retrieve the updated list of users
       socket.on("getUsers", (users) => {
-        console.log(users);
+        // console.log(users);
       });
 
       // Handle the "getMessage" event to receive messages
       socket.on("getMessage", (message) => {
-        console.log(message);
+        // console.log(message);
       });
     });
   };
