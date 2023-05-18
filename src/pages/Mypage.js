@@ -1,13 +1,17 @@
-import React, { useState } from "react";
-import { Sell } from "../components/Mypage/Sell";
+import React, { useEffect, useState } from "react";
+import { Selling } from "../components/Mypage/Selling";
 import { motion } from "framer-motion";
 import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
 import { MyInfo } from "../components/Mypage/MyInfo";
 import { Liked } from "../components/Mypage/Liked";
-import { Bought } from "../components/Mypage/Bought";
+import { Sold } from "../components/Mypage/Sold";
+import { fetchChat, fetchChatLists } from "../api/chat";
+import { useSelector } from "react-redux";
+import { useMutation } from "react-query";
+import { GreenButton } from "../components/common/GreenButton";
 
 export const Mypage = () => {
-  // myinfo, selling, liked, bought
+  // myinfo, selling, liked, sold tabs
   const [activeTab, setActiveTab] = useState("myInfo");
 
   const handleTabChange = (tab) => {
@@ -43,7 +47,7 @@ export const Mypage = () => {
               </ClickableTextHighlight>
             </li>
             <li>
-              <ClickableTextHighlight selectionHighlight={activeTab === "bought"} onClickHandler={() => handleTabChange("bought")}>
+              <ClickableTextHighlight selectionHighlight={activeTab === "sold"} onClickHandler={() => handleTabChange("sold")}>
                 판매 내역
               </ClickableTextHighlight>
             </li>
@@ -52,9 +56,9 @@ export const Mypage = () => {
         <div className="flex  justify-center items-center">
           <div className="w-3/4 p-12 ">
             {activeTab === "myInfo" && <MyInfo />}
-            {activeTab === "selling" && <Sell />}
+            {activeTab === "selling" && <Selling />}
             {activeTab === "liked" && <Liked />}
-            {activeTab === "bought" && <Bought />}
+            {activeTab === "sold" && <Sold />}
           </div>
         </div>
       </div>

@@ -1,39 +1,65 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams } from "react-router";
-import { deleteOneTradeProduct, getOneTradeProduct, toggleLikeTradeProduct, tradCompleteProduct } from "../api/product";
+import { deleteOneTradeProduct, editOneTradeProduct, getOneTradeProduct, toggleLikeTradeProduct, tradCompleteProduct } from "../api/product";
 import { dateConvert } from "../utils/dateConvert";
 import { AiFillHeart } from "react-icons/ai";
 import { GrView } from "react-icons/gr";
 import { GreenButton } from "../components/common/GreenButton";
-import { motion } from "framer-motion";
-import { debounce } from "lodash";
 import { ProductCard } from "../components/common/ProductCard";
 import useModal from "../hooks/useModal";
 import { toast } from "react-toastify";
 import { Broccoli } from "../assets/icons/Broccoli";
 import { useSelector } from "react-redux";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
+import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
 
 export const ProductDetails = () => {
-  const [product, setProduct] = useState();
-  const [imageError, setImageError] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [ModalComponent, openModal, closeModal] = useModal();
   const isAuth = useSelector((state) => state.auth.authenticated);
   const user_id = useSelector((state) => state.auth.user_id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();
+
+  const [product, setProduct] = useState();
+  const [imageError, setImageError] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [ModalComponent, openModal, closeModal] = useModal();
+
+  const [editMode, setEditMode] = useState(false);
+  const [editedTitle, setEditedTitle] = useState("");
+  const [editedContent, setEditedContent] = useState("");
+  const [editedPrice, setEditedPrice] = useState("");
+  const [editedCategory, setEditedCategory] = useState("");
+
   const { data, isLoading } = useQuery(`product${params.id}`, () => getOneTradeProduct(params.id), {
     refetchOnWindowFocus: false,
-    // staleTime: 600 * 1000,
   });
 
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+    setEditedTitle(product.title);
+    setEditedContent(product.content);
+    setEditedPrice(product.price);
+    setEditedCategory(product.category);
+  };
+
+  const saveChanges = () => {
+    editMutation.mutate([
+      params.id,
+      {
+        title: editedTitle,
+        content: editedContent,
+        price: Number(editedPrice),
+        category: editedCategory,
+        photo_ip: product.photo_ip,
+      },
+    ]);
+    setEditMode(false);
+  };
   const likeMutation = useMutation(toggleLikeTradeProduct, {
     onSuccess: () => {
       queryClient.invalidateQueries([`product${params.id}`]);
-      queryClient.invalidateQueries("productList");
     },
     onError: (error) => {
       toast.error(error.response.data.errorMessage);
@@ -50,10 +76,18 @@ export const ProductDetails = () => {
       toast.error(error.response.data.errorMessage);
     },
   });
+  const editMutation = useMutation(editOneTradeProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([`product${params.id}`]);
+      toast.success("수정 성공");
+    },
+    onError: (error) => {
+      toast.error(error.response.data.errorMessage);
+    },
+  });
   const tradeCompleteMutation = useMutation(tradCompleteProduct, {
     onSuccess: () => {
       queryClient.invalidateQueries("productList");
-      queryClient.invalidateQueries([`product${params.id}`]);
       toast.success("판매 완료!");
       navigate("/products");
     },
@@ -94,11 +128,13 @@ export const ProductDetails = () => {
         <div className="px-4 py-24 mx-7 max-w-[800px] ">
           <div className="flex flex-col gap-1 my-1">
             {product && product.id === user_id && <GreenButton buttonText="삭제" clickHandler={onDeleteClick} />}
+            {/* {product && product.id === user_id && <GreenButton buttonText="수정" clickHandler={onEditClick} />} */}
             {product && product.id === user_id && <GreenButton buttonText="판매 완료" clickHandler={onCompleteClick} />}
           </div>
           {likeMutation.isLoading && <LoadingSpinner />}
           {deleteMutation.isLoading && <LoadingSpinner />}
           {tradeCompleteMutation.isLoading && <LoadingSpinner />}
+          {editMutation.isLoading && <LoadingSpinner />}
 
           {product && (
             <>
@@ -150,12 +186,55 @@ export const ProductDetails = () => {
               </div>
               <div className="mt-4">
                 <div className="border-b border-gradient w-full mb-4"></div>
-                <h2 className="text-2xl font-bold">{product.title}</h2>
-                <p className="text-xs my-2 text-gray-500">{product.category}</p>
-                <p className="text-lg font-bold text-gray-700">{product.price.toLocaleString()}원</p>
-                <div className="mt-4 pl-1">
-                  <p className="mt-2 text-gray-700">{product.content}</p>
-                </div>
+
+                {editMode ? (
+                  <div className="flex flex-col">
+                    {/* Edit Mode */}
+                    <div className="flex justify-between">
+                      <input
+                        type="text"
+                        className="text-2xl font-bold"
+                        autoFocus
+                        value={editedTitle}
+                        onChange={(e) => setEditedTitle(e.target.value)}
+                      />
+
+                      {product.id === user_id && <ClickableTextHighlight onClickHandler={saveChanges}>Save</ClickableTextHighlight>}
+                    </div>
+                    <input
+                      type="text"
+                      className="text-xs my-2 text-gray-500"
+                      value={editedCategory}
+                      onChange={(e) => setEditedCategory(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      className="text-lg font-bold text-gray-700"
+                      value={editedPrice}
+                      onChange={(e) => setEditedPrice(e.target.value)}
+                    />
+                    <input
+                      type="text"
+                      className="mt-2 text-gray-700"
+                      value={editedContent}
+                      onChange={(e) => setEditedContent(e.target.value)}
+                    ></input>
+                  </div>
+                ) : (
+                  <>
+                    {/* View Mode */}
+                    <div className="flex justify-between">
+                      <h2 className="text-2xl font-bold">{product.title}</h2>
+                      {product.id === user_id && <ClickableTextHighlight onClickHandler={toggleEditMode}>Edit</ClickableTextHighlight>}
+                    </div>
+                    <p className="text-xs my-2 text-gray-500">{product.category}</p>
+                    <p className="text-lg font-bold text-gray-700">{product.price.toLocaleString()}원</p>
+                    <div className="mt-4 pl-1">
+                      <p className="mt-2 text-gray-700">{product.content}</p>
+                    </div>
+                  </>
+                )}
+                {/* liked, views count */}
                 <div className="flex items-center mt-4">
                   <AiFillHeart className="mr-1 text-red-500" />
                   <span className="text-sm">{product.likes}</span>
@@ -163,6 +242,7 @@ export const ProductDetails = () => {
                   <span className="text-sm">{product.views}</span>
                 </div>
               </div>
+
               <div className="border-b border-gradient w-full my-4"></div>
               <div className="flex flex-col items-center justify-center w-full relative">
                 <div className=" w-full">

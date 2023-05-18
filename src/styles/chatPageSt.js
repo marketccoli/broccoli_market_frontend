@@ -15,8 +15,6 @@ const ChatDiv = styled.div`
   * {
     box-sizing: border-box;
      flex: 1;
-     
-    
 
   }
 `;

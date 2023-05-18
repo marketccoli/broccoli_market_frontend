@@ -44,7 +44,7 @@ export const saveChatContents = async (chatId, contents, userId) => {
       },
       {
         headers: {
-          "x-user-id": userId,
+          chat_id: userId,
         },
       }
     );

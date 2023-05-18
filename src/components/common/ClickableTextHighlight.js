@@ -3,6 +3,7 @@ import React from "react";
 export const ClickableTextHighlight = ({ children, onClickHandler, selectionHighlight }) => {
   return (
     <>
+      {/* Highlight option */}
       {selectionHighlight ? (
         <div
           onClick={onClickHandler}

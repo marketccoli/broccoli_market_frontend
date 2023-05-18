@@ -26,16 +26,26 @@ export const ProductCard = ({ product }) => {
         <div className="mt-4">
           <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">{product.category}</h3>
           <h2 className="text-gray-900 title-font text-lg font-medium">{product.title}</h2>
-          <p className="mt-1">{product.price.toLocaleString()}원</p>
+          {<p className="mt-1">{product.price.toLocaleString()}원</p>}
           <span className="mt-1 text-xs">{product.address}</span>
-          <div className="flex justify-between items-center pr-2">
-            <span className="text-xs">{dateConvert(product.createdAt)}</span>
-            <div className="flex items-center">
-              <AiFillHeart className="mr-1 " color="red" />
-              <span className="mr-2 text-sm">{product.likes}</span>
-              <GrView className="mr-1 text-sm text-white" />
-              <span className="text-sm">{product.views}</span>
-            </div>
+          <div className="flex justify-between items-center pr-2 relative">
+            {/* 관련상품란에는 생성날짜가 없어서 없을때는 보이지 않게 */}
+            {product.createdAt && <span className="text-xs">{dateConvert(product.createdAt)}</span>}
+            {product.createdAt ? (
+              <div className="flex items-center">
+                <AiFillHeart className="mr-1 " color="red" />
+                <span className="mr-2 text-sm">{product.likes}</span>
+                <GrView className="mr-1 text-sm text-white" />
+                <span className="text-sm">{product.views}</span>
+              </div>
+            ) : (
+              <div className="flex items-center mt-2">
+                <AiFillHeart className="mr-1 " color="red" />
+                <span className="mr-2 text-sm">{product.likes}</span>
+                <GrView className="mr-1 text-sm text-white" />
+                <span className="text-sm">{product.views}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

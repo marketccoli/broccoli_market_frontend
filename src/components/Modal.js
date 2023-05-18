@@ -21,26 +21,23 @@ export const Modal = ({ isOpen, onClose }) => {
   const [category, handleCategoryChange] = useInput("");
 
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    if (!file) return;
-    // Check file type
     const fileType = file.type.split("/")[0];
+
+    // ----------- Image validation -------------
+    if (!file) return;
     if (fileType !== "image") {
       alert("The selected file is not an image.");
       return;
     }
-
-    // Check file size
-    const maxSize = 3 * 1024 * 1024; // 3 MB
+    const maxSize = 3 * 1024 * 1024;
     if (file.size > maxSize) {
       alert("File size is too large. Please select a file under 3 MB.");
       return;
     }
-    // console.log(file);
-
+    // ---------------------------------------
     setImage(file);
 
     const reader = new FileReader();
@@ -60,9 +57,11 @@ export const Modal = ({ isOpen, onClose }) => {
       toast.error(error.response.data.errorMessage);
     },
   });
+
   const handleSubmit = () => {
     addProductMutate.mutate({ title, content, price, category, photo: image });
   };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -77,7 +76,6 @@ export const Modal = ({ isOpen, onClose }) => {
         <h2 className="px-56 text-xl my-3">상품등록</h2>
         <div className="flex flex-col">
           {/* image part */}
-
           <div className="flex justify-center items-center rounded-lg w-[500px] h-[300px]">
             <label
               htmlFor="imageInput"

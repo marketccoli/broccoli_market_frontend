@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Broccoli } from "../assets/icons/Broccoli";
 import { useEffect, useState } from "react";
 import { GreenButton } from "../components/common/GreenButton";
-import { DropdownMenu } from "../components/DropdownMenu";
+import { DropdownMenu } from "../components/Header/DropdownMenu";
 import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
 import { useSelector } from "react-redux";
 import useModal from "../hooks/useModal";
@@ -10,11 +10,11 @@ import { useQueryClient } from "react-query";
 export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const isAuth = useSelector((state) => state.auth.authenticated);
+  const queryClient = useQueryClient();
   const [searchWord, setSearchWord] = useState("");
   const [dropdownState, setDropdownState] = useState(false);
-  const isAuth = useSelector((state) => state.auth.authenticated);
   const [ModalComponent, openModal, closeModal] = useModal();
-  const queryClient = useQueryClient();
 
   const handleSearch = () => {
     queryClient.invalidateQueries(`searchedList`);

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logoutApi } from "../api/auth";
-import { DELETE_TOKEN } from "../redux/modules/authSlice";
+import { logoutApi } from "../../api/auth";
+import { DELETE_TOKEN } from "../../redux/modules/authSlice";
 
 export const DropdownMenu = ({ onClickHandler }) => {
   const dispatch = useDispatch();

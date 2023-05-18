@@ -4,28 +4,24 @@ import { getMySellProducts } from "../../api/mypage";
 import { ProductCard } from "../common/ProductCard";
 import { LoadingSpinner } from "../../utils/LoadingSpinner";
 
-export const Sell = () => {
+export const Selling = () => {
   const { data, isLoading } = useQuery("sell", getMySellProducts, {
     refetchOnWindowFocus: false,
-    // staleTime: 600 * 1000,
   });
-  useEffect(() => {
-    if (data) {
-      // console.log(data);
-    }
-  });
+
+  console.log(data?.data.sellPtoduct);
   return (
     <>
       {isLoading && <LoadingSpinner />}
       <div className="flex flex-col items-center justify-center w-full relative">
         <div className=" w-full">
-          <h2 className="pl-1 text-xl font-bold">관심 목록</h2>
+          <h2 className="pl-1 text-xl font-bold">판매중 목록</h2>
           <div className="border-b border-gradient w-full my-2"></div>
         </div>
         <span></span>
-        {data?.data.soldPtoduct.length ? "" : "아이템이 없습니다."}
+        {data?.data.sellPtoduct.length ? "" : "판매중 아이템이 없습니다."}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-2 max-h-full  w-full max-w-[1000px]">
-          {data?.data.soldPtoduct.length ? data.data.soldPtoduct.map((product) => <ProductCard key={product.product_id} product={product} />) : ""}
+          {data?.data.sellPtoduct.length ? data.data.sellPtoduct.map((product) => <ProductCard key={product.product_id} product={product} />) : ""}
         </div>
       </div>
     </>

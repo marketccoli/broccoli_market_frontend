@@ -53,6 +53,7 @@ export const Signup = () => {
       return toast.error("올바른 이메일을 입력해주세요");
     }
     await emailVerificationApi(email);
+    toast.success("인증번호를 이메일로 보냈습니다");
     setShowVerificationInput(true);
     startTimer();
   };
@@ -149,6 +150,7 @@ export const Signup = () => {
         {/* Verification Input */}
         {showVerificationInput && (
           <TextInputField
+            autofocus={true}
             inputLabel="Verification Number"
             inputType="text"
             placeholderText="인증번호를 입력해주세요"

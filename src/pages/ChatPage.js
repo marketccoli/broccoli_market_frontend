@@ -1,90 +1,73 @@
 import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { useMutation } from "react-query";
+import { useSelector } from "react-redux";
+import { GreenButton } from "../components/common/GreenButton";
+import { fetchChat, fetchChatLists } from "../api/chat";
 
 export const ChatPage = () => {
-  // Component state variables
-  const [users, setUsers] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [currentMessage, setCurrentMessage] = useState("");
+  const user_id = useSelector((state) => state.auth.user_id);
+  const [chatList, setChatList] = useState([]);
+  const [currentChatTab, setCurrentChatTab] = useState(null);
+  const [currentTabMessages, setCurrentTabMessages] = useState([]);
 
-  // Socket.io connection
-  const socket = io("ws://localhost:3002"); // Replace with your server URL
+  const chatMutation = useMutation(fetchChatLists, {
+    onSuccess: (response) => {
+      setChatList(response);
+    },
+  });
 
-  // useEffect to handle socket events
+  const chatListMutation = useMutation(fetchChat, {
+    onSuccess: (response) => {
+      setCurrentTabMessages(response.messages);
+    },
+  });
+
+  const onClickFetchChatList = () => {
+    chatMutation.mutate(user_id);
+  };
+
+  const onClickFetchChat = (chatId) => {
+    setCurrentChatTab(chatId);
+    chatListMutation.mutate(chatId);
+  };
+
   useEffect(() => {
-    // Add event listeners for incoming messages and user updates
-    socket.on("getMessage", handleIncomingMessage);
-    socket.on("getUsers", handleUserUpdate);
-
-    // Clean up the socket connection on component unmount
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  // Event handler for incoming messages
-  const handleIncomingMessage = (message) => {
-    setMessages((prevMessages) => [...prevMessages, message]);
-  };
-
-  // Event handler for user updates
-  const handleUserUpdate = (updatedUsers) => {
-    setUsers(updatedUsers);
-  };
-
-  // Event handler for sending messages
-  const sendMessage = () => {
-    const message = {
-      senderId: "replace-with-sender-id",
-      receiverId: "replace-with-receiver-id",
-      text: currentMessage,
-    };
-    socket.emit("sendMessage", message);
-    setCurrentMessage("");
-  };
+    if (currentChatTab) {
+      chatListMutation.mutate(currentChatTab);
+    }
+  }, [currentChatTab]);
 
   return (
     <div className="container mx-auto mt-32">
-      {/* User list */}
-      <div className="bg-gray-200 p-4 rounded-md mb-4">
-        <h2 className="text-lg font-semibold mb-2">Online Users</h2>
-        <ul>
-          {users.map((user) => (
-            <li key={user.userId} className="mb-1">
-              {user.userId}
-            </li>
-          ))}
-        </ul>
+      <div className="flex">
+        <div className="w-1/4 bg-gray-200 p-4">
+          <h2 className="text-lg font-bold mb-4">Chat List</h2>
+          <div>
+            {chatList?.map((chat) => (
+              <div
+                key={chat.chat_id}
+                className={`p-2 mb-2 cursor-pointer ${chat.chat_id === currentChatTab ? "bg-gray-300" : ""}`}
+                onClick={() => onClickFetchChat(chat.chat_id)}
+              >
+                {chat.chat_id}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="w-3/4 bg-white p-4">
+          <h2 className="text-lg font-bold mb-4">Messages</h2>
+          <div>
+            {currentTabMessages?.map((chat, index) => (
+              <div key={index} className="mb-2">
+                <div className="font-bold">{chat.sender_nickname}</div>
+                <div>{chat.text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-
-      {/* Message list */}
-      <div className="bg-white p-4 rounded-md">
-        <h2 className="text-lg font-semibold mb-2">Chat</h2>
-        <ul>
-          {messages.map((message, index) => (
-            <li key={index} className="mb-1">
-              <strong>{message.senderId}:</strong> {message.text}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Message input */}
-      <div className="flex mt-4">
-        <input
-          type="text"
-          value={currentMessage}
-          onChange={(e) => setCurrentMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-grow border border-gray-300 rounded-l p-2 focus:outline-none"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={!currentMessage}
-          className={`bg-blue-500 text-white px-4 py-2 rounded-r ${!currentMessage && "cursor-not-allowed opacity-50"}`}
-        >
-          Send
-        </button>
+      <div className="mt-4">
+        <GreenButton buttonText="Fetch Chat List" clickHandler={onClickFetchChatList} />
       </div>
     </div>
   );

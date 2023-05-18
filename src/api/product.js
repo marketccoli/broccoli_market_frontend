@@ -14,7 +14,6 @@ export const postTradeProduct = async (data) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    // console.log("Image upload successful");
   } catch (error) {
     console.error(error);
     throw error;
@@ -41,10 +40,11 @@ export const getOneTradeProduct = async (productId) => {
   }
 };
 
-export const editOneTradeProduct = async (productId, data) => {
+export const editOneTradeProduct = async ([productId, data]) => {
   try {
+    console.log(data);
     const response = await axios.patch(`/product/${productId}`, data);
-    // console.log(response);
+
     return response;
   } catch (error) {
     console.log(error);
@@ -58,7 +58,7 @@ export const deleteOneTradeProduct = async (productId) => {
         product_id: parseInt(productId),
       },
     });
-    // console.log(response);
+
     return response;
   } catch (error) {
     console.log(error);
@@ -72,7 +72,7 @@ export const tradCompleteProduct = async (productId) => {
         product_id: parseInt(productId),
       },
     });
-    // console.log(response);
+
     return response;
   } catch (error) {
     console.log(error);
@@ -81,9 +81,7 @@ export const tradCompleteProduct = async (productId) => {
 
 export const toggleLikeTradeProduct = async (productId) => {
   try {
-    // console.log("activate?");
     const response = await axios.put(`/product/${productId}/likes`);
-    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -97,16 +95,15 @@ export const searchProduct = async (keyword) => {
         keyword: keyword,
       },
     });
-    // console.log(response);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
-export const getProductListByCategory = async (category) => {
+
+export const getProductListByRegion = async ([city, gu]) => {
   try {
-    const response = await axios.get(`/products?category=${category}`);
-    // console.log(response);
+    const response = await axios.get(`/product/region?region=${city} ${gu}`);
     return response;
   } catch (error) {
     console.log(error);

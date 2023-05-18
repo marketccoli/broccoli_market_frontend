@@ -7,8 +7,9 @@ const fetchChatLists = async (user_id) => {
       user_id: user_id,
     },
   });
+  console.log(response.data.chatLists);
   // console.log('api 안', response.data);
-  return response.data;
+  return response.data.chatLists;
 };
 
 // 새로운 1:1채팅 생성
@@ -26,8 +27,9 @@ const createChat = async ({ product_id, buyer_id, buyer_nickname, seller_id, sel
 
 //1:1채팅 내역 조회
 const fetchChat = async (chat_id) => {
-  const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/${chat_id}`);
-  return response.data.chat;
+  const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/chat/${chat_id}`);
+  console.log("chatlist", response.data.chatInfo);
+  return response.data.chatInfo;
 };
 
 //1:1 채팅 내역 저장
