@@ -4,17 +4,23 @@ import { useEffect, useState } from "react";
 import { GreenButton } from "../components/common/GreenButton";
 import { DropdownMenu } from "../components/Header/DropdownMenu";
 import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useModal from "../hooks/useModal";
 import { useQueryClient } from "react-query";
+import { io } from "socket.io-client";
+import { SET_SOCKET_ID } from "../redux/modules/authSlice";
+
 export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const isAuth = useSelector((state) => state.auth.authenticated);
+  const user_id = useSelector((state) => state.auth.user_id);
+  const dispatch = useDispatch();
   const queryClient = useQueryClient();
   const [searchWord, setSearchWord] = useState("");
   const [dropdownState, setDropdownState] = useState(false);
   const [ModalComponent, openModal, closeModal] = useModal();
+  const [socket, setSocket] = useState(null);
 
   const handleSearch = () => {
     queryClient.invalidateQueries(`searchedList`);
@@ -39,6 +45,41 @@ export const Header = () => {
   useEffect(() => {
     setDropdownState(false);
   }, [navigate]);
+
+  const initializeWebSocket = () => {
+    const socket = io("http://localhost:8900", {});
+
+    socket.on("connect", () => {
+      // Retrieve the socket.id
+      const socketId = socket.id;
+      console.log("Socket ID:", socketId);
+      dispatch(SET_SOCKET_ID(socketId));
+
+      // Emit the "addUser" event with the socketId and other user information
+      socket.emit("addUser", { user_id, socketId }); // Replace "userId" with the actual user ID
+
+      // Handle the "getUsers" event to retrieve the updated list of users
+      socket.on("getUsers", (users) => {
+        console.log(users);
+      });
+
+      // Handle the "getMessage" event to receive messages
+      socket.on("getMessage", (message) => {
+        console.log(message);
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (isAuth) {
+      initializeWebSocket();
+    } else {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+    }
+  }, [isAuth]);
 
   return (
     <>

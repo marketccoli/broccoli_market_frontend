@@ -13,10 +13,12 @@ import { Broccoli } from "../assets/icons/Broccoli";
 import { useSelector } from "react-redux";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
 import { ClickableTextHighlight } from "../components/common/ClickableTextHighlight";
+import { createProductChat } from "../api/chat";
 
 export const ProductDetails = () => {
   const isAuth = useSelector((state) => state.auth.authenticated);
   const user_id = useSelector((state) => state.auth.user_id);
+  const socketId = useSelector((state) => state.auth.socket_id);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();
@@ -57,6 +59,7 @@ export const ProductDetails = () => {
     ]);
     setEditMode(false);
   };
+
   const likeMutation = useMutation(toggleLikeTradeProduct, {
     onSuccess: () => {
       queryClient.invalidateQueries([`product${params.id}`]);
@@ -85,6 +88,7 @@ export const ProductDetails = () => {
       toast.error(error.response.data.errorMessage);
     },
   });
+
   const tradeCompleteMutation = useMutation(tradCompleteProduct, {
     onSuccess: () => {
       queryClient.invalidateQueries("productList");
@@ -100,7 +104,6 @@ export const ProductDetails = () => {
     setLiked(!liked);
     likeMutation.mutate(params.id);
   };
-
   const onDeleteClick = () => {
     deleteMutation.mutate(params.id);
   };
@@ -111,11 +114,14 @@ export const ProductDetails = () => {
   const handleImageError = () => {
     setImageError(true);
   };
+  const productChatHandler = async () => {
+    const response = await createProductChat(params.id, socketId);
+    navigate(`/chats/${response}`);
+  };
 
   useEffect(() => {
     if (data) {
       setProduct(data);
-      // console.log(data);
     }
   }, [data]);
 
@@ -138,6 +144,7 @@ export const ProductDetails = () => {
 
           {product && (
             <>
+              {/* Image part  */}
               <div className="min-h-[400px] min-w-[400px] h-[500px] relative">
                 {isAuth && (
                   <AiFillHeart
@@ -161,7 +168,7 @@ export const ProductDetails = () => {
                   <img alt="Placeholder" className="object-cover w-full h-full rounded-md" src="https://via.placeholder.com/420x260?text=Image" />
                 )}
               </div>
-
+              {/* Seller info part */}
               <div className="mt-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-medium">판매 정보</h3>
@@ -184,6 +191,7 @@ export const ProductDetails = () => {
                   </div>
                 </div>
               </div>
+              {/* Product info Part */}
               <div className="mt-4">
                 <div className="border-b border-gradient w-full mb-4"></div>
 
@@ -234,12 +242,17 @@ export const ProductDetails = () => {
                     </div>
                   </>
                 )}
-                {/* liked, views count */}
-                <div className="flex items-center mt-4">
-                  <AiFillHeart className="mr-1 text-red-500" />
-                  <span className="text-sm">{product.likes}</span>
-                  <GrView className="ml-4 mr-1 text-sm text-gray-500" />
-                  <span className="text-sm">{product.views}</span>
+                <div className="flex justify-between">
+                  {/* liked, views count */}
+                  <div className="flex items-center mt-4">
+                    <AiFillHeart className="mr-1 text-red-500" />
+                    <span className="text-sm">{product.likes}</span>
+                    <GrView className="ml-4 mr-1 text-sm text-gray-500" />
+                    <span className="text-sm">{product.views}</span>
+                  </div>
+                  <div>
+                    <GreenButton buttonText="채팅하기" clickHandler={productChatHandler} />
+                  </div>
                 </div>
               </div>
 

@@ -27,6 +27,15 @@ export const getMyBoughtProducts = async () => {
     console.log(error);
   }
 };
+export const getMyInfo = async () => {
+  try {
+    const response = await axios.get(`/mypage/info`);
+
+    return response.data.MyInfo;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const editMyInfo = async (data) => {
   try {
     const response = await axios.patch(`/mypage`, data);

@@ -3,11 +3,13 @@ import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
 import { GreenButton } from "../components/common/GreenButton";
 import { fetchChat, fetchChatLists } from "../api/chat";
+import { useParams } from "react-router-dom";
 
 export const ChatPage = () => {
   const user_id = useSelector((state) => state.auth.user_id);
+  const params = useParams();
   const [chatList, setChatList] = useState([]);
-  const [currentChatTab, setCurrentChatTab] = useState(null);
+  const [currentChatTab, setCurrentChatTab] = useState(params.id ? params.id : "");
   const [currentTabMessages, setCurrentTabMessages] = useState([]);
 
   const chatMutation = useMutation(fetchChatLists, {
@@ -37,6 +39,10 @@ export const ChatPage = () => {
     }
   }, [currentChatTab]);
 
+  useEffect(() => {
+    onClickFetchChatList();
+  }, []);
+
   return (
     <div className="container mx-auto mt-32">
       <div className="flex">
@@ -46,10 +52,11 @@ export const ChatPage = () => {
             {chatList?.map((chat) => (
               <div
                 key={chat.chat_id}
-                className={`p-2 mb-2 cursor-pointer ${chat.chat_id === currentChatTab ? "bg-gray-300" : ""}`}
+                className={`p-2 mb-2 cursor-pointer flex flex-col ${chat.chat_id === currentChatTab ? "bg-gray-300" : ""}`}
                 onClick={() => onClickFetchChat(chat.chat_id)}
               >
-                {chat.chat_id}
+                <span className="font-bold">{chat.seller_nickname}</span>
+                <span className="text-sm px-3">{chat.latestMessage ? chat.latestMessage.text : "최근 대화내역이 없습니다"}</span>
               </div>
             ))}
           </div>

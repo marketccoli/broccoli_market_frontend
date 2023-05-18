@@ -9,7 +9,7 @@ export const Selling = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(data?.data.sellPtoduct);
+  console.log(data && data);
   return (
     <>
       {isLoading && <LoadingSpinner />}

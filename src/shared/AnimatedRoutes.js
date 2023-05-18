@@ -41,7 +41,8 @@ export const AnimatedRoutes = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/chats" element={<ChatPage />} />
+        <Route path="/chats/" element={<ChatPage />} />
+        <Route path="/chats/:id" element={<ChatPage />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/region" element={<RegionProduct />} />
         <Route path="/products" element={<ProductsPage />} />

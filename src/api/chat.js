@@ -47,5 +47,17 @@ const addChatContents = async ({ chat_id, content, user_id }) => {
   });
   return response.data.updatedChat;
 };
+export const createProductChat = async (productId, socketId) => {
+  try {
+    const response = await axios.post(`/chat/${productId}`, {
+      product_id: parseInt(productId),
+      socket_id: socketId,
+    });
+    console.log(response);
+    return response.data.newChat.chat_id;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export { fetchChatLists, createChat, fetchChat, addChatContents };
