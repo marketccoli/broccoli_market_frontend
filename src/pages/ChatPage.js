@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { useSelector } from "react-redux";
-import { fetchChat, fetchChatLists } from "../api/chat";
+import { addChatContents, fetchChat, fetchChatLists } from "../api/chat";
 import { useParams } from "react-router-dom";
 import ChatComponent from "../components/ChatComponent";
 import { dateConvert } from "../utils/dateConvert";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { io } from "socket.io-client";
+import { GreenButton } from "../components/common/GreenButton";
 
 export const ChatPage = () => {
   const user_id = useSelector((state) => state.auth.user_id);
+  const socket = useSelector((state) => state.auth.socket);
   const params = useParams();
   const [chatList, setChatList] = useState([]);
   const [currentChatTab, setCurrentChatTab] = useState(params.id ? params.id : "");
@@ -37,11 +40,12 @@ export const ChatPage = () => {
     chatMutation.mutate(user_id);
   };
 
-  const onClickFetchChat = (chatId) => {
-    setCurrentChatTab(chatId);
+  const onClickFetchChat = async (chatId) => {
+    await setCurrentChatTab(chatId);
+    await socket?.emit("join_room", currentChatTab);
     chatListMutation.mutate(chatId);
   };
-
+  console.log(editorContent);
   const handleSubmit = () => {
     // console.log(editorContent);
   };
@@ -56,8 +60,17 @@ export const ChatPage = () => {
     onClickFetchChatList();
   }, []);
 
+  const sendMessage = async () => {
+    await socket?.emit("sendMessage", editorContent);
+    await addChatContents(currentChatTab, editorContent);
+    chatListMutation.mutate(currentChatTab);
+  };
+  const handleInputChange = (e) => {
+    setEditorContent(e.target.value);
+  };
   return (
     <div className="container mx-auto mt-32">
+      <GreenButton buttonText="click" clickHandler={sendMessage} />
       <div className="flex">
         <div className="w-1/4 bg-[#f5fff2] p-4 rounded-l-lg">
           <h2 className="text-lg font-bold mb-4">Chat List</h2>
@@ -83,13 +96,7 @@ export const ChatPage = () => {
           <h2 className="text-lg font-bold mb-4">Messages</h2>
           <div className="border-b border-gradient w-full my-4"></div>
           <ChatComponent currentTabMessages={currentTabMessages} user_id={user_id} />
-          <ReactQuill
-            className=" bg-white rounded-t mr-7"
-            value={editorContent}
-            onChange={setEditorContent}
-            placeholder="Type your message... "
-            modules={{ toolbar }}
-          />
+          <input className="w-full border rounded" value={editorContent} onChange={handleInputChange} />
         </div>
       </div>
       {/* <div className="mt-4">

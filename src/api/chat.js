@@ -33,20 +33,11 @@ const fetchChat = async (chat_id) => {
 };
 
 //1:1 채팅 내역 저장
-const addChatContents = async ({ chat_id, content, user_id }) => {
-  const createdAt = new Date().toISOString();
-  const response = await axios.patch(`${process.env.REACT_APP_SERVER_URL}/${chat_id}`, {
-    chat_id,
-    contents: [
-      {
-        content,
-        user_id,
-        createdAt,
-      },
-    ],
-  });
-  return response.data.updatedChat;
+const addChatContents = async (chat_id, textBody) => {
+  const response = await axios.post(`/chat/${chat_id}/messages`, { text: textBody });
+  return response.data;
 };
+
 export const createProductChat = async (productId, socketId) => {
   try {
     const response = await axios.post(`/chat/${productId}`, {

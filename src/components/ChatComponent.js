@@ -10,7 +10,7 @@ const ChatComponent = ({ currentTabMessages, user_id }) => {
   }, [currentTabMessages]);
 
   return (
-    <div ref={chatContainerRef} className="overflow-auto h-80">
+    <div ref={chatContainerRef} className="overflow-auto h-[450px]">
       {currentTabMessages
         ?.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
         .map((chat, index) => (

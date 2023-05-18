@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useModal from "../hooks/useModal";
 import { useQueryClient } from "react-query";
 import { io } from "socket.io-client";
-import { SET_SOCKET_ID } from "../redux/modules/authSlice";
+import { SET_SOCKET_ID, SET_SOCKET_INSTANCE } from "../redux/modules/authSlice";
 
 export const Header = () => {
   const location = useLocation();
@@ -46,33 +46,27 @@ export const Header = () => {
     setDropdownState(false);
   }, [navigate]);
 
-  const initializeWebSocket = () => {
-    const socket = io("http://localhost:8900", {});
+  useEffect(() => {
+    setSocket(io("ws://localhost:3002", {}));
+    dispatch(SET_SOCKET_INSTANCE(socket));
+  }, []);
 
-    socket.on("connect", () => {
+  const initializeWebSocket = async () => {
+    socket?.on("connect", () => {
       // Retrieve the socket.id
       const socketId = socket.id;
-      // console.log("Socket ID:", socketId);
+      console.log("Socket ID:", socketId);
+
       dispatch(SET_SOCKET_ID(socketId));
 
       // Emit the "addUser" event with the socketId and other user information
-      socket.emit("addUser", { user_id, socketId }); // Replace "userId" with the actual user ID
-
-      // Handle the "getUsers" event to retrieve the updated list of users
-      socket.on("getUsers", (users) => {
-        // console.log(users);
-      });
-
-      // Handle the "getMessage" event to receive messages
-      socket.on("getMessage", (message) => {
-        // console.log(message);
-      });
+      socket.emit("socket_id", { user_id, socketId }); // Replace "userId" with the actual user ID
     });
   };
 
   useEffect(() => {
     if (isAuth) {
-      // initializeWebSocket();
+      initializeWebSocket();
     } else {
       if (socket) {
         socket.disconnect();

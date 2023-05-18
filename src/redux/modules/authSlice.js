@@ -7,11 +7,15 @@ const authSlice = createSlice({
     authenticated: false,
     user_id: "",
     socket_id: "",
+    socket: null,
   },
 
   reducers: {
     SET_SOCKET_ID: (state, action) => {
       state.socket_id = action.payload;
+    },
+    SET_SOCKET_INSTANCE: (state, action) => {
+      state.socket = action.payload;
     },
     SET_TOKEN: (state, action) => {
       state.authenticated = true;
@@ -26,5 +30,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { SET_TOKEN, DELETE_TOKEN, SET_SOCKET_ID } = authSlice.actions;
+export const { SET_TOKEN, DELETE_TOKEN, SET_SOCKET_ID, SET_SOCKET_INSTANCE } = authSlice.actions;
 export default authSlice.reducer;
