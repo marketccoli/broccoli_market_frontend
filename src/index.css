@@ -19,26 +19,3 @@
   background-color: #175329;
   border-radius: 5px;
 }
-.ql-toolbar.ql-snow {
-  border: none;
-}
-.ql-container.ql-snow {
-  border: none;
-}
-.ql-toolbar.ql-snow {
-  border: none;
-  font-size: 14px;
-  line-height: 1.2;
-  padding: 6px;
-  margin: 0;
-}
-
-.ql-toolbar.ql-snow button {
-  font-size: 14px;
-  padding: 4px 8px;
-  margin-right: 4px;
-}
-
-.ql-toolbar.ql-snow button:last-child {
-  margin-right: 0;
-}

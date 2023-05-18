@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { getMySellProducts } from "../../api/mypage";
 import { ProductCard } from "../common/ProductCard";

@@ -5,9 +5,9 @@ import { addChatContents, fetchChat, fetchChatLists } from "../api/chat";
 import { useParams } from "react-router-dom";
 import ChatComponent from "../components/ChatComponent";
 import { dateConvert } from "../utils/dateConvert";
-import ReactQuill from "react-quill";
+
 import "react-quill/dist/quill.snow.css";
-import { io } from "socket.io-client";
+
 import { GreenButton } from "../components/common/GreenButton";
 
 export const ChatPage = () => {
@@ -18,11 +18,6 @@ export const ChatPage = () => {
   const [currentChatTab, setCurrentChatTab] = useState(params.id ? params.id : "");
   const [currentTabMessages, setCurrentTabMessages] = useState([]);
   const [editorContent, setEditorContent] = useState("");
-
-  const toolbar = {
-    container: [["bold", "italic", "underline"]],
-    handlers: {},
-  };
 
   const chatMutation = useMutation(fetchChatLists, {
     onSuccess: (response) => {

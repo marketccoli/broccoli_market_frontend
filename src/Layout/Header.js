@@ -46,27 +46,24 @@ export const Header = () => {
     setDropdownState(false);
   }, [navigate]);
 
-  useEffect(() => {
-    setSocket(io("ws://localhost:3002", {}));
-    dispatch(SET_SOCKET_INSTANCE(socket));
-  }, []);
+  // useEffect(() => {
+  //   setSocket(io("http://api.broccoli-market.store", {}));
+  //   dispatch(SET_SOCKET_INSTANCE(socket));
+  // }, []);
 
   const initializeWebSocket = async () => {
+    setSocket(io("http://api.broccoli-market.store", {}));
     socket?.on("connect", () => {
-      // Retrieve the socket.id
       const socketId = socket.id;
       console.log("Socket ID:", socketId);
-
       dispatch(SET_SOCKET_ID(socketId));
-
-      // Emit the "addUser" event with the socketId and other user information
-      socket.emit("socket_id", { user_id, socketId }); // Replace "userId" with the actual user ID
+      socket.emit("socket_id", { user_id, socketId });
     });
   };
 
   useEffect(() => {
     if (isAuth) {
-      initializeWebSocket();
+      // initializeWebSocket();
     } else {
       if (socket) {
         socket.disconnect();
